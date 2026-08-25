@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- WCAG 1.4.4: pinch-to-zoom enabled -->
+    <meta name="theme-color" content="#0a1628">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ledgerix">
+    <meta name="description" content="Ledgerix - Professional GST Billing & Business Management">
+
+    <title>Ledgerix - GST Billing & Business Management</title>
+
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome: unicode fallback applied immediately; webfont loaded async -->
+    <style id="fa-embedded">
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-style: normal; font-weight: 900; font-display: swap;
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2') format('woff2'),
+                 url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff') format('woff');
+        }
+        @font-face {
+            font-family: 'Font Awesome 6 Brands';
+            font-style: normal; font-weight: 400; font-display: swap;
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2') format('woff2'),
+                 url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff') format('woff');
+        }
+        .fas, .far { font-family: 'Font Awesome 6 Free'; font-weight: 900; font-style: normal; display: inline-block; -webkit-font-smoothing: antialiased; }
+        .fab { font-family: 'Font Awesome 6 Brands'; font-weight: 400; font-style: normal; display: inline-block; -webkit-font-smoothing: antialiased; }
+        .fa-spin { animation: fa-spin 2s linear infinite; }
+        @keyframes fa-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .fa-search::before{content:"\f002"}.fa-bell::before{content:"\f0f3"}.fa-bell-slash::before{content:"\f1f6"}
+        .fa-cog::before{content:"\f013"}.fa-download::before{content:"\f019"}.fa-upload::before{content:"\f093"}
+        .fa-palette::before{content:"\f53f"}.fa-plus::before{content:"\002b"}.fa-plus-circle::before{content:"\f055"}
+        .fa-minus-circle::before{content:"\f056"}.fa-trash::before{content:"\f1f8"}.fa-trash-alt::before{content:"\f2ed"}
+        .fa-edit::before{content:"\f044"}.fa-save::before{content:"\f0c7"}.fa-file-pdf::before{content:"\f1c1"}
+        .fa-file-invoice::before{content:"\f570"}.fa-file-alt::before{content:"\f15c"}.fa-file-csv::before{content:"\f6dd"}
+        .fa-file-excel::before{content:"\f1c3"}.fa-chart-bar::before{content:"\f080"}.fa-chart-line::before{content:"\f201"}
+        .fa-chart-pie::before{content:"\f200"}.fa-calculator::before{content:"\f1ec"}.fa-camera::before{content:"\f030"}
+        .fa-camera-retro::before{content:"\f083"}.fa-user::before{content:"\f007"}.fa-user-tie::before{content:"\f508"}
+        .fa-user-plus::before{content:"\f234"}.fa-users::before{content:"\f0c0"}.fa-box::before{content:"\f466"}
+        .fa-box-open::before{content:"\f49e"}.fa-boxes::before{content:"\f468"}.fa-rupee-sign::before{content:"\f156"}
+        .fa-check::before{content:"\f00c"}.fa-check-circle::before{content:"\f058"}.fa-times::before{content:"\f00d"}
+        .fa-times-circle::before{content:"\f057"}.fa-print::before{content:"\f02f"}.fa-share-alt::before{content:"\f1e0"}
+        .fa-copy::before{content:"\f0c5"}.fa-lock::before{content:"\f023"}.fa-fingerprint::before{content:"\f577"}
+        .fa-shield-alt::before{content:"\f3ed"}.fa-wifi::before{content:"\f1eb"}.fa-sync::before{content:"\f021"}
+        .fa-undo::before{content:"\f0e2"}.fa-history::before{content:"\f1da"}.fa-clock::before{content:"\f017"}
+        .fa-hourglass-start::before{content:"\f251"}.fa-calendar-alt::before{content:"\f073"}.fa-info-circle::before{content:"\f05a"}
+        .fa-exclamation::before{content:"\0021"}.fa-exclamation-circle::before{content:"\f06a"}.fa-exclamation-triangle::before{content:"\f071"}
+        .fa-star::before{content:"\f005"}.fa-crown::before{content:"\f521"}.fa-trophy::before{content:"\f091"}
+        .fa-bars::before{content:"\f0c9"}.fa-arrow-left::before{content:"\f060"}.fa-arrow-right::before{content:"\f061"}
+        .fa-arrow-up::before{content:"\f062"}.fa-bolt::before{content:"\f0e7"}.fa-play::before{content:"\f04b"}
+        .fa-spinner::before{content:"\f110"}.fa-expand::before{content:"\f065"}.fa-eye::before{content:"\f06e"}
+        .fa-building::before{content:"\f1ad"}.fa-envelope::before{content:"\f0e0"}.fa-image::before{content:"\f03e"}
+        .fa-sun::before{content:"\f185"}.fa-heart::before{content:"\f004"}.fa-lightbulb::before{content:"\f0eb"}
+        .fa-magic::before{content:"\f0d0"}.fa-database::before{content:"\f1c0"}.fa-folder-open::before{content:"\f07c"}
+        .fa-mobile-alt::before{content:"\f3cd"}.fa-sticky-note::before{content:"\f249"}.fa-signature::before{content:"\f5b7"}
+        .fa-text-height::before{content:"\f034"}.fa-shipping-fast::before{content:"\f48b"}.fa-percentage::before{content:"\0025"}
+        .fa-sliders-h::before{content:"\f1de"}.fa-cloud-upload-alt::before{content:"\f382"}.fa-crop-alt::before{content:"\f565"}
+        .fa-whatsapp::before{content:"\f232"}.fa-telegram::before{content:"\f2c6"}.fa-qrcode::before{content:"\f029"}
+    </style>
+
+    <!-- Chart.js (pinned) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+    <!-- jsPDF + AutoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- QR Code -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+
+    <!-- Application Styles -->
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+
+    <!-- Offline Indicator -->
+    <div class="offline-bar" id="offlineBar">
+        <i class="fas fa-wifi"></i> You are offline. Some features may be limited.
+    </div>
+
+    <!-- Install Banner -->
+    <div class="install-banner" id="installBanner">
+        <i class="fas fa-download"></i> Install Ledgerix as an app
+        <button onclick="installApp()">Install</button>
+        <span style="cursor:pointer;font-size:1.2rem" onclick="dismissInstall()">&times;</span>
+    </div>
+
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-logo">L</div>
+        <div class="splash-text">Ledgerix</div>
+        <div class="splash-sub">v2.0 Business Management</div>
+        <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+    </div>
+
+    <!-- Global Search Overlay -->
+    <div class="global-search-overlay" id="globalSearchOverlay" onclick="closeGlobalSearch(event)">
+        <div class="global-search-box" onclick="event.stopPropagation()">
+            <div style="position:relative">
+                <i class="fas fa-search" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--gray)"></i>
+                <input type="text" class="global-search-input" id="globalSearchInput" 
+                       placeholder="Search invoices, clients, products..." 
+                       oninput="performGlobalSearch(this.value)"
+                       onkeydown="if(event.key==='Escape')closeGlobalSearch()">
+                <span style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:var(--navy-lighter);color:var(--gray);padding:0.15rem 0.4rem;border-radius:4px;font-size:0.65rem;font-family:monospace">ESC</span>
+            </div>
+            <div class="global-search-results" id="globalSearchResults"></div>
+        </div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notif-header">
+            <h3><i class="fas fa-bell"></i> Notifications</h3>
+            <button class="modal-close" onclick="toggleNotifications()">&times;</button>
+        </div>
+        <div class="notif-list" id="notificationList"></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Title</div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">L</div>
+            <div>
+                <div class="logo-text">Ledgerix</div>
+                <div class="logo-sub">v2.0 Business Suite</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" onclick="toggleGlobalSearch()" title="Search (Ctrl+K)">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="header-btn" onclick="toggleNotifications()" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="badge-count" id="notifBadge" style="display:none">0</span>
+            </button>
+            <button class="header-btn" onclick="backupData()" title="Backup"><i class="fas fa-download"></i></button>
+            <button class="header-btn" onclick="showRestoreModal()" title="Restore"><i class="fas fa-upload"></i></button>
+            <button class="header-btn" onclick="toggleThemeMenu()" title="Theme"><i class="fas fa-palette"></i></button>
+            <button class="header-btn" onclick="toggleSettings()" title="Settings"><i class="fas fa-cog"></i></button>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-item active" onclick="switchTab('dashboard')">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </div>
+            <div class="sidebar-item" onclick="switchTab('scanner')">
+                <i class="fas fa-camera"></i> OCR Scanner
+            </div>
+            <div class="sidebar-item" onclick="switchTab('calculator')">
+                <i class="fas fa-calculator"></i> GST Calculator
+            </div>
+            <div class="sidebar-item" onclick="switchTab('invoice')">
+                <i class="fas fa-file-invoice"></i> New Invoice
+            </div>
+            <div class="sidebar-item" onclick="switchTab('invoices')">
+                <i class="fas fa-folder-open"></i> All Invoices
+            </div>
+            <div class="sidebar-item" onclick="switchTab('clients')">
+                <i class="fas fa-users"></i> Clients
+            </div>
+            <div class="sidebar-item" onclick="switchTab('products')">
+                <i class="fas fa-boxes"></i> Products
+            </div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-label">Business</div>
+            <div class="sidebar-item" onclick="switchTab('reports')">
+                <i class="fas fa-chart-bar"></i> Reports
+            </div>
+            <div class="sidebar-item" onclick="switchTab('analytics')">
+                <i class="fas fa-chart-pie"></i> Analytics
+            </div>
+            <div class="sidebar-item" onclick="switchTab('profile')">
+                <i class="fas fa-building"></i> My Business
+            </div>
+            <div class="sidebar-item" onclick="switchTab('settings')">
+                <i class="fas fa-sliders-h"></i> Settings
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+
+            <!-- DASHBOARD TAB -->
+            <div id="dashboard-tab" class="tab-content active">
+                <!-- Quick Action Buttons -->
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="switchTab('invoice')">
+                        <i class="fas fa-plus-circle"></i> New Invoice
+                    </button>
+                    <button class="quick-action-btn" onclick="switchTab('calculator')">
+                        <i class="fas fa-calculator"></i> GST Calculator
+                    </button>
+                    <button class="quick-action-btn" onclick="switchTab('clients')">
+                        <i class="fas fa-user-plus"></i> Add Client
+                    </button>
+                    <button class="quick-action-btn" onclick="switchTab('products')">
+                        <i class="fas fa-box-open"></i> Add Product
+                    </button>
+                    <button class="quick-action-btn" onclick="switchTab('reports')">
+                        <i class="fas fa-chart-bar"></i> View Reports
+                    </button>
+                    <button class="quick-action-btn" onclick="backupData()">
+                        <i class="fas fa-download"></i> Backup Data
+                    </button>
+                </div>
+
+                <!-- Business Performance Cards -->
+                <div class="dashboard-grid">
+                    <div class="dash-col-3">
+                        <div class="performance-card">
+                            <div class="perf-header">
+                                <span class="perf-title">Today's Sales</span>
+                                <div class="perf-icon gold" style="background:rgba(201,168,76,0.15);color:var(--gold)"><i class="fas fa-rupee-sign"></i></div>
+                            </div>
+                            <div class="perf-value" id="dashTodaySales">Rs0.00</div>
+                            <div class="perf-sub">
+                                <span class="perf-trend up" id="dashSalesTrend"><i class="fas fa-arrow-up"></i> <span id="dashSalesChange">0%</span></span>
+                                <span style="color:var(--gray)"> vs yesterday</span>
+                            </div>
+                            <div class="perf-progress"><div class="perf-progress-fill" id="todaySalesProgress" style="width:0%;background:var(--gold)"></div></div>
+                        </div>
+                    </div>
+                    <div class="dash-col-3">
+                        <div class="performance-card">
+                            <div class="perf-header">
+                                <span class="perf-title">This Month</span>
+                                <div class="perf-icon info" style="background:rgba(52,152,219,0.15);color:var(--info)"><i class="fas fa-calendar-alt"></i></div>
+                            </div>
+                            <div class="perf-value" id="dashMonthSales">Rs0.00</div>
+                            <div class="perf-sub">
+                                <span class="perf-trend up" id="dashMonthTrend"><i class="fas fa-arrow-up"></i> <span id="dashMonthChange">0%</span></span>
+                                <span style="color:var(--gray)"> vs last month</span>
+                            </div>
+                            <div class="perf-progress"><div class="perf-progress-fill" id="monthSalesProgress" style="width:0%;background:var(--info)"></div></div>
+                        </div>
+                    </div>
+                    <div class="dash-col-3">
+                        <div class="performance-card">
+                            <div class="perf-header">
+                                <span class="perf-title">Pending Amount</span>
+                                <div class="perf-icon danger" style="background:rgba(231,76,60,0.15);color:var(--danger)"><i class="fas fa-clock"></i></div>
+                            </div>
+                            <div class="perf-value" id="dashPending">Rs0.00</div>
+                            <div class="perf-sub">
+                                <span class="perf-trend down" id="dashPendingTrend"><i class="fas fa-exclamation-circle"></i> <span id="dashPendingCount">0</span> invoices</span>
+                            </div>
+                            <div class="perf-progress"><div class="perf-progress-fill" id="pendingProgress" style="width:0%;background:var(--danger)"></div></div>
+                        </div>
+                    </div>
+                    <div class="dash-col-3">
+                        <div class="performance-card">
+                            <div class="perf-header">
+                                <span class="perf-title">Collection Rate</span>
+                                <div class="perf-icon success" style="background:rgba(46,204,113,0.15);color:var(--success)"><i class="fas fa-check-circle"></i></div>
+                            </div>
+                            <div class="perf-value" id="dashCollectionRate">0%</div>
+                            <div class="perf-sub">
+                                <span class="perf-trend up" id="dashCollectionTrend"><i class="fas fa-arrow-up"></i> <span id="dashPaidAmount">Rs0.00</span></span>
+                                <span style="color:var(--gray)"> collected</span>
+                            </div>
+                            <div class="perf-progress"><div class="perf-progress-fill" id="collectionProgress" style="width:0%;background:var(--success)"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Growth Indicator -->
+                <div class="dashboard-grid">
+                    <div class="dash-col-4">
+                        <div class="dash-section">
+                            <div class="dash-section-title">
+                                <span><i class="fas fa-chart-line"></i> Sales Growth</span>
+                            </div>
+                            <div id="salesGrowthContent">
+                                <div class="growth-indicator">
+                                    <div class="growth-chart">
+                                        <svg width="60" height="60" viewBox="0 0 60 60">
+                                            <circle cx="30" cy="30" r="26" fill="none" stroke="var(--navy-lighter)" stroke-width="6"/>
+                                            <circle id="growthCircle" cx="30" cy="30" r="26" fill="none" stroke="var(--gold)" stroke-width="6" stroke-dasharray="163.36" stroke-dashoffset="163.36" stroke-linecap="round"/>
+                                        </svg>
+                                        <div class="growth-percent" id="growthPercent">0%</div>
+                                    </div>
+                                    <div class="growth-info">
+                                        <div class="growth-title">This Month vs Last Month</div>
+                                        <div class="growth-value" id="growthValue">Rs0.00</div>
+                                        <div class="growth-sub" id="growthSub">No data available</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-col-4">
+                        <div class="dash-section">
+                            <div class="dash-section-title">
+                                <span><i class="fas fa-file-invoice"></i> Invoice Overview</span>
+                            </div>
+                            <div class="paid-unpaid-container" id="paidUnpaidContainer">
+                                <div class="paid-unpaid-chart">
+                                    <canvas id="paidUnpaidChart" width="140" height="140"></canvas>
+                                    <div class="paid-unpaid-center">
+                                        <div class="center-value" id="paidUnpaidTotal">0</div>
+                                        <div class="center-label">Invoices</div>
+                                    </div>
+                                </div>
+                                <div class="paid-unpaid-legend" id="paidUnpaidLegend">
+                                    <!-- Dynamic content -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-col-4">
+                        <div class="dash-section">
+                            <div class="dash-section-title">
+                                <span><i class="fas fa-percentage"></i> GST Summary</span>
+                            </div>
+                            <div class="gst-summary-grid" id="gstSummaryGrid">
+                                <div class="gst-summary-card">
+                                    <div class="gst-label">CGST</div>
+                                    <div class="gst-value" id="dashCGST">Rs0.00</div>
+                                    <div class="gst-sub">Intra-state</div>
+                                </div>
+                                <div class="gst-summary-card">
+                                    <div class="gst-label">SGST</div>
+                                    <div class="gst-value" id="dashSGST">Rs0.00</div>
+                                    <div class="gst-sub">Intra-state</div>
+                                </div>
+                                <div class="gst-summary-card">
+                                    <div class="gst-label">IGST</div>
+                                    <div class="gst-value" id="dashIGST">Rs0.00</div>
+                                    <div class="gst-sub">Inter-state</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="chart-grid">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-chart-bar"></i> Monthly Revenue</div>
+                        <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-chart-pie"></i> GST Breakdown</div>
+                        <div class="chart-container"><canvas id="gstChart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Lists Row -->
+                <div class="dashboard-grid">
+                    <div class="dash-col-6">
+                        <div class="dash-section">
+                            <div class="dash-section-title">
+                                <span><i class="fas fa-clock"></i> Recent Invoices</span>
+                                <a onclick="switchTab('invoices')">View All <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            <div id="recentInvoicesList">
+                                <div class="empty-dash-state">
+                                    <i class="fas fa-file-invoice"></i>
+                                    <h4>No invoices yet</h4>
+                                    <p>Create your first invoice to see it here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-col-6">
+                        <div class="dash-section">
+                            <div class="dash-section-title">
+                                <span><i class="fas fa-exclamation-triangle"></i> Pending Payments</span>
+                                <a onclick="switchTab('invoices')">View All <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            <div id="pendingPaymentsList">
+                                <div class="empty-dash-state">
+                                    <i class="fas fa-check-circle"></i>
+                                    <h4>No pending payments</h4>
+                                    <p>All invoices are paid. Great job!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Lists Row -->
+                <div class="dashboard-grid">
+                    <div class="dash-col-6">
+                        <div class="dash-section">
+                            <div class="dash-section-title">
+                                <span><i class="fas fa-trophy"></i> Top 5 Clients</span>
+                                <a onclick="switchTab('analytics')">Analytics <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            <div id="topClientsList">
+                                <div class="empty-dash-state">
+                                    <i class="fas fa-users"></i>
+                                    <h4>No client data</h4>
+                                    <p>Add clients and create invoices to see top clients</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dash-col-6">
+                        <div class="dash-section">
+                            <div class="dash-section-title">
+                                <span><i class="fas fa-boxes"></i> Top Selling Products</span>
+                                <a onclick="switchTab('analytics')">Analytics <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                            <div id="topProductsList">
+                                <div class="empty-dash-state">
+                                    <i class="fas fa-box-open"></i>
+                                    <h4>No product sales</h4>
+                                    <p>Add products to invoices to see top sellers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-history"></i> Recent Activity</div>
+                    <div id="recentActivity"></div>
+                </div>
+            </div>
+
+            <!-- OCR BILL SCANNER TAB -->
+            <div id="scanner-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-camera"></i> OCR Bill Scanner</div>
+                    <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1rem">
+                        <i class="fas fa-info-circle"></i> Upload a photo of any paper bill or invoice. Our scanner will automatically read text, detect products, prices, quantities, and GST details.
+                    </p>
+
+                    <div class="ocr-container">
+                        <div>
+                            <div class="ocr-upload-zone" id="ocrUploadZone" onclick="document.getElementById('ocrFileInput').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h3 style="color:var(--gold);margin-bottom:0.3rem">Click to Upload Bill Image</h3>
+                                <p style="color:var(--gray);font-size:0.8rem">Supports JPG, PNG, WEBP</p>
+                                <img id="ocrPreviewImg" class="ocr-preview-img" alt="Preview">
+                                <input type="file" id="ocrFileInput" accept="image/*" style="display:none" onchange="handleOCRUpload(event)">
+                            </div>
+                            <div class="ocr-progress-wrap" id="ocrProgressWrap">
+                                <div class="ocr-progress-bar" id="ocrProgressBar"></div>
+                            </div>
+                            <div class="ocr-status" id="ocrStatus">
+                                <i class="fas fa-hourglass-start"></i> <span>Waiting for image...</span>
+                            </div>
+                            <div class="btn-group" style="margin-top:1rem">
+                                <button class="btn btn-primary" id="btnStartOCR" onclick="startOCRScan()" disabled>
+                                    <i class="fas fa-bolt"></i> Start Scanning
+                                </button>
+                                <button class="btn btn-secondary" onclick="clearOCR()">
+                                    <i class="fas fa-undo"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div id="ocrDetectedPanel" style="display:none">
+                                <h3 style="color:var(--gold);font-size:1rem;margin-bottom:0.8rem"><i class="fas fa-magic"></i> Detected Details</h3>
+
+                                <div class="ocr-gstin-box" id="ocrGSTINBox" style="display:none">
+                                    <i class="fas fa-fingerprint"></i>
+                                    <input type="text" id="ocrDetectedGSTIN" placeholder="GSTIN not detected">
+                                    <span style="font-size:0.7rem;color:var(--gray)">GSTIN</span>
+                                </div>
+
+                                <div class="ocr-detected-card">
+                                    <div class="ocr-field">
+                                        <label>Vendor / Seller</label>
+                                        <input type="text" id="ocrVendorName" placeholder="Not detected">
+                                    </div>
+                                    <div class="ocr-field">
+                                        <label>Bill Date</label>
+                                        <input type="date" id="ocrBillDate">
+                                    </div>
+                                    <div class="ocr-field">
+                                        <label>Bill Number</label>
+                                        <input type="text" id="ocrBillNumber" placeholder="Not detected">
+                                    </div>
+                                </div>
+
+                                <div style="margin-top:1rem">
+                                    <h4 style="color:var(--gray);font-size:0.85rem;margin-bottom:0.5rem"><i class="fas fa-boxes"></i> Detected Items</h4>
+                                    <div style="overflow-x:auto">
+                                        <table class="ocr-items-table" id="ocrItemsTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th style="width:60px">Qty</th>
+                                                    <th style="width:90px">Rate</th>
+                                                    <th style="width:60px">GST%</th>
+                                                    <th style="width:30px"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="ocrItemsBody"></tbody>
+                                        </table>
+                                    </div>
+                                    <button class="btn btn-sm btn-secondary" onclick="addOCROItem()" style="margin-top:0.5rem">
+                                        <i class="fas fa-plus"></i> Add Item
+                                    </button>
+                                </div>
+
+                                <div class="ocr-detected-card" style="margin-top:1rem">
+                                    <div class="ocr-field">
+                                        <label>Subtotal</label>
+                                        <input type="number" id="ocrSubtotal" placeholder="0" readonly style="color:var(--gold)">
+                                    </div>
+                                    <div class="ocr-field">
+                                        <label>Total GST</label>
+                                        <input type="number" id="ocrTotalGST" placeholder="0" readonly style="color:var(--gold)">
+                                    </div>
+                                    <div class="ocr-field">
+                                        <label>Grand Total</label>
+                                        <input type="number" id="ocrGrandTotal" placeholder="0" readonly style="color:var(--gold);font-weight:700">
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" onclick="createInvoiceFromOCR()" style="width:100%;margin-top:1rem">
+                                    <i class="fas fa-file-invoice"></i> Create Invoice from Scan
+                                </button>
+                            </div>
+
+                            <div id="ocrEmptyState" class="empty-dash-state">
+                                <i class="fas fa-camera-retro"></i>
+                                <h4>No scan yet</h4>
+                                <p>Upload a bill image and click "Start Scanning" to see detected details here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-lightbulb"></i> Tips for Best Results</div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+                        <div style="background:var(--glass);border-radius:10px;padding:1rem;border:1px solid var(--glass-border)">
+                            <i class="fas fa-sun" style="color:var(--gold);font-size:1.2rem;margin-bottom:0.5rem;display:block"></i>
+                            <strong style="color:var(--white);font-size:0.85rem">Good Lighting</strong>
+                            <p style="color:var(--gray);font-size:0.75rem;margin-top:0.3rem">Ensure the bill is well-lit and shadows are minimized</p>
+                        </div>
+                        <div style="background:var(--glass);border-radius:10px;padding:1rem;border:1px solid var(--glass-border)">
+                            <i class="fas fa-expand" style="color:var(--gold);font-size:1.2rem;margin-bottom:0.5rem;display:block"></i>
+                            <strong style="color:var(--white);font-size:0.85rem">Flat Surface</strong>
+                            <p style="color:var(--gray);font-size:0.75rem;margin-top:0.3rem">Place bill on flat surface and capture from directly above</p>
+                        </div>
+                        <div style="background:var(--glass);border-radius:10px;padding:1rem;border:1px solid var(--glass-border)">
+                            <i class="fas fa-text-height" style="color:var(--gold);font-size:1.2rem;margin-bottom:0.5rem;display:block"></i>
+                            <strong style="color:var(--white);font-size:0.85rem">Clear Text</strong>
+                            <p style="color:var(--gray);font-size:0.75rem;margin-top:0.3rem">Avoid blurry images. Text should be clearly readable</p>
+                        </div>
+                        <div style="background:var(--glass);border-radius:10px;padding:1rem;border:1px solid var(--glass-border)">
+                            <i class="fas fa-crop-alt" style="color:var(--gold);font-size:1.2rem;margin-bottom:0.5rem;display:block"></i>
+                            <strong style="color:var(--white);font-size:0.85rem">Full Capture</strong>
+                            <p style="color:var(--gray);font-size:0.75rem;margin-top:0.3rem">Ensure all corners and totals are visible in the image</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GST CALCULATOR TAB -->
+            <div id="calculator-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-calculator"></i> GST Calculator</div>
+                    <div class="gst-type-selector">
+                        <button class="gst-type-btn active" id="btnExclusive" onclick="setGSTType(false)">
+                            <i class="fas fa-plus-circle"></i> Exclusive GST<br><small>Add GST</small>
+                        </button>
+                        <button class="gst-type-btn" id="btnInclusive" onclick="setGSTType(true)">
+                            <i class="fas fa-minus-circle"></i> Inclusive GST<br><small>Remove GST</small>
+                        </button>
+                    </div>
+                    <div class="gst-explanation" id="gstExplanation">
+                        <strong>Exclusive GST:</strong> GST will be <strong>ADDED</strong> to the amount.<br>
+                        Example: Rs10,000 + 18% GST = Rs11,800 final (CGST 9% + SGST 9%)
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Amount (Rs)</label>
+                            <input type="number" class="form-input" id="calcAmount" placeholder="Enter amount" oninput="calculateGST(false)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">GST Rate (%)</label>
+                            <div class="quick-rates">
+                                <button class="quick-rate-btn" onclick="setQuickRate(0)">0%</button>
+                                <button class="quick-rate-btn" onclick="setQuickRate(5)">5%</button>
+                                <button class="quick-rate-btn" onclick="setQuickRate(12)">12%</button>
+                                <button class="quick-rate-btn active" onclick="setQuickRate(18)">18%</button>
+                                <button class="quick-rate-btn" onclick="setQuickRate(28)">28%</button>
+                                <button class="quick-rate-btn" onclick="setQuickRate('custom')">Custom</button>
+                            </div>
+                            <div class="form-group" id="customRateGroup" style="display:none;margin-top:0.5rem;">
+                                <input type="number" class="form-input" id="customRate" placeholder="Custom rate %" oninput="calculateGST(false)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tax Type</label>
+                            <select class="form-select" id="taxType" onchange="calculateGST(false)">
+                                <option value="intra">Intra-State (CGST + SGST)</option>
+                                <option value="inter">Inter-State (IGST)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tax Category</label>
+                            <select class="form-select" id="taxCategory" onchange="calculateGST(false)">
+                                <option value="regular">Regular GST</option>
+                                <option value="zero">Zero Rated</option>
+                                <option value="exempt">Exempted</option>
+                                <option value="nogst">No GST</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="calculateGST(true)" style="width:100%">
+                        <i class="fas fa-bolt"></i> Calculate & Save to History
+                    </button>
+                    <div class="results-grid" id="calcResults" style="display:none">
+                        <div class="result-box"><div class="result-label">Base Amount</div><div class="result-value" id="resBase">Rs0.00</div></div>
+                        <div class="result-box" id="cgstBox"><div class="result-label">CGST</div><div class="result-value" id="resCGST">Rs0.00</div></div>
+                        <div class="result-box" id="sgstBox"><div class="result-label">SGST</div><div class="result-value" id="resSGST">Rs0.00</div></div>
+                        <div class="result-box hidden" id="igstBox"><div class="result-label">IGST</div><div class="result-value" id="resIGST">Rs0.00</div></div>
+                        <div class="result-box"><div class="result-label">Total Tax</div><div class="result-value" id="resTotalGST">Rs0.00</div></div>
+                        <div class="result-box" style="border:2px solid var(--gold)"><div class="result-label">Final Amount</div><div class="result-value total" id="resFinal">Rs0.00</div></div>
+                    </div>
+                </div>
+                <div class="card" id="calcHistoryCard" style="display:none">
+                    <div class="card-title"><i class="fas fa-history"></i> Recent Calculations</div>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+
+            <!-- NEW INVOICE TAB -->
+            <div id="invoice-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div id="profileBanner" style="display:none">
+                    <div style="background:linear-gradient(145deg,rgba(201,168,76,0.1),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.3);border-radius:12px;padding:1rem;margin-bottom:1rem;">
+                        <h3 style="color:var(--gold);font-size:1rem;margin-bottom:0.3rem"><i class="fas fa-building"></i> <span id="bannerBizName"></span></h3>
+                        <p style="color:var(--gray);font-size:0.8rem" id="bannerBizDetails"></p>
+                        <button class="btn btn-sm btn-secondary" onclick="switchTab('profile')" style="margin-top:0.6rem"><i class="fas fa-edit"></i> Edit</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-user-tie"></i> Client Details</div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-input" id="clientSearch" placeholder="Search client..." oninput="searchClients(this.value)">
+                    </div>
+                    <div id="clientSearchResults" style="margin-bottom:0.8rem"></div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Client Name *</label>
+                            <input type="text" class="form-input" id="invClient" placeholder="e.g. ABC Pvt Ltd" onchange="autoSaveInvoice()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Client GSTIN</label>
+                            <input type="text" class="form-input" id="invClientGSTIN" placeholder="e.g. 27AABCU9603R1ZX" onchange="autoSaveInvoice()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Client Address</label>
+                        <textarea class="form-textarea" id="invClientAddr" placeholder="Full address" onchange="autoSaveInvoice()"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Client Phone</label>
+                            <input type="tel" class="form-input" id="invClientPhone" placeholder="+91 98765 43210" onchange="autoSaveInvoice()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Client Email</label>
+                            <input type="email" class="form-input" id="invClientEmail" placeholder="client@email.com" onchange="autoSaveInvoice()">
+                        </div>
+                    </div>
+                    <button class="btn btn-success btn-sm" onclick="saveCurrentClient()"><i class="fas fa-save"></i> Save Client</button>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-file-alt"></i> Invoice Details</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Invoice Number *</label>
+                            <div style="display:flex;gap:0.5rem">
+                                <input type="text" class="form-input" id="invNumber" placeholder="INV-2026-001" style="flex:1" onchange="autoSaveInvoice()">
+                                <button class="btn btn-info btn-sm" onclick="generateInvoiceNumber()" style="flex:0 0 auto"><i class="fas fa-sync"></i> Auto</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Invoice Date</label>
+                            <input type="date" class="form-input" id="invDate" onchange="autoSaveInvoice()">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Due Date</label>
+                            <input type="date" class="form-input" id="invDueDate" onchange="autoSaveInvoice()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Payment Status</label>
+                            <select class="form-select" id="invPaymentStatus" onchange="autoSaveInvoice()">
+                                <option value="pending">Pending</option>
+                                <option value="paid">Paid</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Payment Method</label>
+                            <select class="form-select" id="invPaymentMethod" onchange="autoSaveInvoice()">
+                                <option value="">Select Method</option>
+                                <option value="cash">Cash</option>
+                                <option value="upi">UPI</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="card">Credit/Debit Card</option>
+                                <option value="cheque">Cheque</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tax Type</label>
+                            <select class="form-select" id="invTaxType" onchange="autoSaveInvoice()">
+                                <option value="intra">Intra-State (CGST+SGST)</option>
+                                <option value="inter">Inter-State (IGST)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-boxes"></i> Products / Items</div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-input" id="productSearch" placeholder="Search products..." oninput="searchProducts(this.value)">
+                    </div>
+                    <div id="productSearchResults" style="margin-bottom:0.8rem"></div>
+                    <div style="overflow-x:auto">
+                        <table class="items-table" id="itemsTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:25%">Description</th>
+                                    <th style="width:12%">HSN</th>
+                                    <th style="width:8%">Qty</th>
+                                    <th style="width:12%">Rate (Rs)</th>
+                                    <th style="width:8%">GST %</th>
+                                    <th style="width:8%">Disc %</th>
+                                    <th style="width:12%">Amount</th>
+                                    <th style="width:5%"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsBody"></tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-secondary add-item-btn" onclick="addItem()"><i class="fas fa-plus"></i> Add Item</button>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-shipping-fast"></i> Additional Charges</div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label class="form-label">Shipping</label>
+                            <input type="number" class="form-input" id="invShipping" placeholder="0" oninput="autoSaveInvoice()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Packaging</label>
+                            <input type="number" class="form-input" id="invPackaging" placeholder="0" oninput="autoSaveInvoice()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Handling</label>
+                            <input type="number" class="form-input" id="invHandling" placeholder="0" oninput="autoSaveInvoice()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Round Off</label>
+                        <div style="display:flex;align-items:center;gap:1rem">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="invRoundOff" onchange="autoSaveInvoice()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="color:var(--gray);font-size:0.85rem">Auto round to nearest rupee</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-sticky-note"></i> Terms & Notes</div>
+                    <div class="form-group">
+                        <label class="form-label">Terms & Conditions</label>
+                        <textarea class="form-textarea" id="invTerms" placeholder="Goods once sold will not be taken back..." onchange="autoSaveInvoice()"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notes / Remarks</label>
+                        <textarea class="form-textarea" id="invNotes" placeholder="Any additional notes..." onchange="autoSaveInvoice()"></textarea>
+                    </div>
+                </div>
+                <div class="btn-group" style="margin-bottom:1rem">
+                    <button class="btn btn-primary" onclick="generateInvoice()"><i class="fas fa-eye"></i> Preview</button>
+                    <button class="btn btn-success" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                    <button class="btn btn-info" onclick="saveInvoice()"><i class="fas fa-save"></i> Save</button>
+                    <button class="btn btn-secondary" onclick="printInvoice()"><i class="fas fa-print"></i> Print</button>
+                    <button class="btn btn-warning" onclick="shareInvoice()"><i class="fas fa-share-alt"></i> Share</button>
+                    <button class="btn btn-danger" onclick="resetInvoice()"><i class="fas fa-trash"></i> Reset</button>
+                </div>
+                <div id="invoicePreview" style="display:none">
+                    <div class="card-title" style="margin-bottom:0.8rem"><i class="fas fa-file-invoice"></i> Invoice Preview</div>
+                    <div class="invoice-preview" id="invoiceContent"></div>
+                </div>
+            </div>
+
+            <!-- ALL INVOICES TAB -->
+            <div id="invoices-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-folder-open"></i> All Invoices</div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-input" id="invoiceSearch" placeholder="Search invoices by number, client..." oninput="filterInvoices()">
+                    </div>
+                    <div class="sub-tabs">
+                        <button class="sub-tab active" onclick="filterInvoiceStatus('all')">All</button>
+                        <button class="sub-tab" onclick="filterInvoiceStatus('paid')">Paid</button>
+                        <button class="sub-tab" onclick="filterInvoiceStatus('pending')">Pending</button>
+                        <button class="sub-tab" onclick="filterInvoiceStatus('overdue')">Overdue</button>
+                    </div>
+                    <div id="invoicesList"></div>
+                </div>
+            </div>
+
+            <!-- CLIENTS TAB -->
+            <div id="clients-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-user-plus"></i> Add New Client</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Client Name *</label>
+                            <input type="text" class="form-input" id="newClientName" placeholder="e.g. ABC Pvt Ltd">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">GSTIN</label>
+                            <input type="text" class="form-input" id="newClientGSTIN" placeholder="27AABCU9603R1ZX">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-textarea" id="newClientAddr" placeholder="Full address"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-input" id="newClientPhone" placeholder="+91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="newClientEmail" placeholder="client@email.com">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addNewClient()" style="width:100%"><i class="fas fa-save"></i> Save Client</button>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-users"></i> Saved Clients</div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-input" id="clientListSearch" placeholder="Search clients..." oninput="filterClientList()">
+                    </div>
+                    <div id="clientsList"></div>
+                </div>
+            </div>
+
+            <!-- PRODUCTS TAB -->
+            <div id="products-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-plus-circle"></i> Add New Product</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Product Name *</label>
+                            <input type="text" class="form-input" id="newProductName" placeholder="e.g. Laptop Dell">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">HSN Code</label>
+                            <input type="text" class="form-input" id="newProductHSN" placeholder="8471">
+                        </div>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label class="form-label">Rate (Rs)</label>
+                            <input type="number" class="form-input" id="newProductRate" placeholder="45000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">GST %</label>
+                            <select class="form-select" id="newProductGST">
+                                <option value="0">0%</option><option value="5">5%</option><option value="12">12%</option><option value="18" selected>18%</option><option value="28">28%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stock Qty</label>
+                            <input type="number" class="form-input" id="newProductStock" placeholder="10">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addNewProduct()" style="width:100%"><i class="fas fa-save"></i> Save Product</button>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-boxes"></i> Product Database</div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-input" id="productListSearch" placeholder="Search products..." oninput="filterProductList()">
+                    </div>
+                    <div id="productsList"></div>
+                </div>
+            </div>
+
+            <!-- REPORTS TAB (NEW IN PHASE 2) -->
+            <div id="reports-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-chart-bar"></i> Business Reports</div>
+                    <div class="report-filters">
+                        <div class="form-row-4">
+                            <div class="form-group">
+                                <label class="form-label">Report Type</label>
+                                <select class="form-select" id="reportType" onchange="onReportTypeChange()">
+                                    <option value="daily">Daily Sales Report</option>
+                                    <option value="weekly">Weekly Sales Report</option>
+                                    <option value="monthly">Monthly Sales Report</option>
+                                    <option value="yearly">Yearly Sales Report</option>
+                                    <option value="gst">GST Collection Summary</option>
+                                    <option value="client">Client-wise Sales</option>
+                                    <option value="product">Product-wise Sales</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">From Date</label>
+                                <input type="date" class="form-input" id="reportFromDate">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">To Date</label>
+                                <input type="date" class="form-input" id="reportToDate">
+                            </div>
+                            <div class="form-group" style="display:flex;align-items:flex-end;gap:0.5rem">
+                                <button class="btn btn-primary" onclick="generateReport()" style="flex:1"><i class="fas fa-play"></i> Generate</button>
+                                <button class="btn btn-secondary" onclick="resetReportDates()" style="flex:0 0 auto"><i class="fas fa-undo"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="reportContent" style="display:none">
+                        <div class="date-range-display" id="reportDateRange"></div>
+                        <div class="report-summary" id="reportSummary"></div>
+                        <div class="report-export-bar">
+                            <button class="btn btn-success btn-sm" onclick="exportReportPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
+                            <button class="btn btn-teal btn-sm" onclick="exportReportExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
+                            <button class="btn btn-info btn-sm" onclick="exportReportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                            <button class="btn btn-warning btn-sm" onclick="printReport()"><i class="fas fa-print"></i> Print</button>
+                        </div>
+                        <div style="overflow-x:auto">
+                            <table class="report-table" id="reportTable">
+                                <thead id="reportTableHead"></thead>
+                                <tbody id="reportTableBody"></tbody>
+                                <tfoot id="reportTableFoot"></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="reportEmpty" class="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>No Report Generated</h3>
+                        <p>Select report type and date range, then click Generate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANALYTICS TAB (ENHANCED IN PHASE 2) -->
+            <div id="analytics-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon gold"><i class="fas fa-crown"></i></div>
+                        <div class="stat-label">Top Product</div>
+                        <div class="stat-value" id="analyticsTopProduct" style="font-size:1rem">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info"><i class="fas fa-star"></i></div>
+                        <div class="stat-label">Top Customer</div>
+                        <div class="stat-value" id="analyticsTopCustomer" style="font-size:1rem">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon success"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-label">Avg. Invoice</div>
+                        <div class="stat-value" id="analyticsAvgInvoice">Rs0.00</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning"><i class="fas fa-percentage"></i></div>
+                        <div class="stat-label">Collection Rate</div>
+                        <div class="stat-value" id="analyticsCollectionRate">0%</div>
+                    </div>
+                </div>
+                <div class="chart-grid">
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-chart-line"></i> Monthly Sales Trend</div>
+                        <div class="chart-container"><canvas id="analyticsSalesChart"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-chart-pie"></i> Revenue by Status</div>
+                        <div class="chart-container"><canvas id="analyticsCategoryChart"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-trophy"></i> Top Selling Products</div>
+                        <div class="chart-container"><canvas id="analyticsProductChart"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title"><i class="fas fa-users"></i> Top Customers</div>
+                        <div class="chart-container"><canvas id="analyticsClientChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE TAB -->
+            <div id="profile-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-building"></i> Business Profile</div>
+                    <p style="color:var(--gray);margin-bottom:1rem;font-size:0.85rem">Fill once. Auto-fills in every invoice.</p>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Business Name *</label>
+                            <input type="text" class="form-input" id="profileName" placeholder="Ayaan Enterprises">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">GSTIN</label>
+                            <input type="text" class="form-input" id="profileGSTIN" placeholder="27AABCU9603R1ZX">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Business Address</label>
+                        <textarea class="form-textarea" id="profileAddr" placeholder="Full address"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-input" id="profilePhone" placeholder="+91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="profileEmail" placeholder="contact@business.com">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Invoice Prefix</label>
+                            <input type="text" class="form-input" id="profilePrefix" placeholder="INV" value="INV">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Financial Year</label>
+                            <input type="text" class="form-input" id="profileFY" placeholder="2026-27" value="2026-27">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Bank Name</label>
+                            <input type="text" class="form-input" id="profileBank" placeholder="HDFC Bank">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Account Number</label>
+                            <input type="text" class="form-input" id="profileAccount" placeholder="1234567890">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">IFSC Code</label>
+                            <input type="text" class="form-input" id="profileIFSC" placeholder="HDFC0001234">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">UPI ID</label>
+                            <input type="text" class="form-input" id="profileUPI" placeholder="business@upi">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Company Logo</label>
+                            <div class="file-upload" onclick="document.getElementById('logoUpload').click()">
+                                <i class="fas fa-image"></i>
+                                <p style="font-size:0.8rem;color:var(--gray)">Click to upload logo</p>
+                                <input type="file" id="logoUpload" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+                            </div>
+                            <div class="logo-preview" id="logoPreview" style="display:none"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Digital Signature</label>
+                            <div class="file-upload" onclick="document.getElementById('sigUpload').click()">
+                                <i class="fas fa-signature"></i>
+                                <p style="font-size:0.8rem;color:var(--gray)">Click to upload signature</p>
+                                <input type="file" id="sigUpload" accept="image/*" style="display:none" onchange="handleSigUpload(event)">
+                            </div>
+                            <div class="signature-preview" id="sigPreview" style="display:none"></div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="saveProfile()" style="flex:2"><i class="fas fa-save"></i> Save Profile</button>
+                        <button class="btn btn-danger" onclick="clearProfile()"><i class="fas fa-trash"></i> Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div id="settings-tab" class="tab-content">
+                <button class="back-btn" onclick="switchTab('dashboard')">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-cog"></i> General Settings</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Currency</label>
+                            <select class="form-select" id="settingCurrency">
+                                <option value="Rs">Indian Rupee (Rs)</option>
+                                <option value="$">US Dollar ($)</option>
+                                <option value="€">Euro (€)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Default GST Rate</label>
+                            <select class="form-select" id="settingDefaultGST">
+                                <option value="0">0%</option><option value="5">5%</option><option value="12">12%</option><option value="18" selected>18%</option><option value="28">28%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Date Format</label>
+                            <select class="form-select" id="settingDateFormat">
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Language</label>
+                            <select class="form-select" id="settingLanguage">
+                                <option value="en">English</option>
+                                <option value="hi">Hindi</option>
+                                <option value="mr">Marathi</option>
+                                <option value="gu">Gujarati</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Theme</label>
+                        <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+                            <button class="btn btn-sm btn-secondary" onclick="setTheme('default')">Dark Gold</button>
+                            <button class="btn btn-sm btn-secondary" onclick="setTheme('light-theme')">Light</button>
+                            <button class="btn btn-sm btn-secondary" onclick="setTheme('theme-blue')">Blue</button>
+                            <button class="btn btn-sm btn-secondary" onclick="setTheme('theme-green')">Green</button>
+                            <button class="btn btn-sm btn-secondary" onclick="setTheme('theme-purple')">Purple</button>
+                            <button class="btn btn-sm btn-secondary" onclick="setTheme('theme-corporate')">Corporate</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveSettings()" style="width:100%"><i class="fas fa-save"></i> Save Settings</button>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-shield-alt"></i> Security</div>
+                    <div class="form-group">
+                        <label class="form-label">PIN Protection</label>
+                        <div style="display:flex;align-items:center;gap:1rem">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="pinEnabled" onchange="togglePIN()">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="color:var(--gray)">Require PIN to open app</span>
+                        </div>
+                    </div>
+                    <div id="pinSetup" style="display:none">
+                        <div class="form-group">
+                            <label class="form-label">Set 4-digit PIN</label>
+                            <input type="password" class="form-input" id="newPIN" maxlength="4" placeholder="****">
+                        </div>
+                        <button class="btn btn-primary" onclick="savePIN()"><i class="fas fa-lock"></i> Set PIN</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-mobile-alt"></i> PWA & App</div>
+                    <div class="form-group">
+                        <p style="color:var(--gray);font-size:0.85rem;margin-bottom:0.8rem">
+                            Ledgerix works offline and can be installed as an app on your device.
+                        </p>
+                        <div class="btn-group">
+                            <button class="btn btn-success" onclick="installApp()" id="btnInstallApp"><i class="fas fa-download"></i> Install App</button>
+                            <button class="btn btn-info" onclick="checkOfflineStatus()"><i class="fas fa-wifi"></i> Check Connection</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-database"></i> Data Management</div>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="backupData()"><i class="fas fa-download"></i> Export Backup</button>
+                        <button class="btn btn-info" onclick="showRestoreModal()"><i class="fas fa-upload"></i> Import Backup</button>
+                        <button class="btn btn-warning" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
+                        <button class="btn btn-danger" onclick="clearAllData()"><i class="fas fa-trash-alt"></i> Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <p><i class="fas fa-heart" style="color:var(--danger)"></i> Made for Indian Small Businesses | Ledgerix v2.0</p>
+                <p style="margin-top:0.2rem;font-size:0.7rem">All data stored locally. Works offline. PWA Ready.</p>
+            </footer>
+        </main>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+
+
+<!-- Application Entry Point (ES Module) -->
+<script type="module" src="assets/js/app.js"></script>
+
+<!-- Service Worker Registration (PWA offline-first) -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+        .then(function (reg) {
+          console.info('[PWA] Service worker registered:', reg.scope);
+        })
+        .catch(function (err) {
+          console.warn('[PWA] Service worker registration failed:', err);
+        });
+    });
+  }
+</script>
+
+</body>
+</html>
