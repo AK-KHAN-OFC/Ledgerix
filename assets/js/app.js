@@ -173,6 +173,64 @@ window.backupData            = backupData;
 window.restoreData           = restoreData;
 window.clearAllData          = clearAllData;
 
+// ── Missing bridge shims (called from HTML but not previously bridged) ─────────
+
+// Invoice Preview/Print — HTML calls generateInvoice() & printInvoice()
+window.generateInvoice       = previewInvoice;  // alias
+window.printInvoice          = function() { window.print(); };
+
+// Profile
+window.clearProfile          = function() {
+  ['profileName','profileGSTIN','profileAddr','profilePhone','profileEmail',
+   'profilePrefix','profileFY','profileBank','profileAccount','profileIFSC','profileUPI']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('logoPreview')?.style && (document.getElementById('logoPreview').style.display = 'none');
+  document.getElementById('sigPreview')?.style  && (document.getElementById('sigPreview').style.display = 'none');
+};
+
+// Settings
+window.toggleGlobalSearch   = openGlobalSearch;  // alias
+window.installApp           = function() {
+  const btn = document.getElementById('btnInstallApp');
+  if (window._deferredInstallPrompt) {
+    window._deferredInstallPrompt.prompt();
+    window._deferredInstallPrompt.userChoice.then(() => { window._deferredInstallPrompt = null; if (btn) btn.disabled = true; });
+  } else { showToast('App already installed or not available', 'info'); }
+};
+window.checkOfflineStatus   = function() {
+  showToast(navigator.onLine ? 'You are online' : 'You are offline', navigator.onLine ? 'success' : 'warning');
+};
+window.exportExcel          = function() { showToast('Use Reports tab to export Excel', 'info'); };
+
+// Reports
+window.exportReportPDF      = function() { window.print(); };
+window.onReportTypeChange   = function() { /* handled by generateReport */ };
+window.resetReportDates     = function() {
+  const t = today();
+  const from = document.getElementById('reportFromDate');
+  const to   = document.getElementById('reportToDate');
+  if (from) from.value = addDays(t, -30);
+  if (to)   to.value   = t;
+};
+
+// OCR — HTML uses addOCROItem (typo with O) — bridge both spellings
+window.addOCROItem           = addOCRItem;
+
+// Backup restore modal
+window.showRestoreModal      = function() {
+  const el = document.getElementById('modalContent');
+  const title = document.getElementById('modalTitle');
+  if (title) title.textContent = 'Restore Backup';
+  if (el) el.innerHTML = `
+    <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1rem">Select your Ledgerix backup JSON file.</p>
+    <input type="file" id="restoreFileInput" accept=".json" class="form-input" style="margin-bottom:0.8rem">
+    <button class="btn btn-primary" style="width:100%" onclick="restoreData(document.getElementById('restoreFileInput').files[0])">
+      <i class="fas fa-upload"></i> Restore Now
+    </button>
+  `;
+  document.getElementById('modalOverlay')?.classList.add('active');
+};
+
 window.handleOCRUpload       = handleOCRUpload;
 window.startOCRScan          = startOCRScan;
 window.createInvoiceFromOCR  = createInvoiceFromOCR;

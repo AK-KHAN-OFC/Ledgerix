@@ -771,20 +771,36 @@
                         <table class="items-table" id="itemsTable">
                             <thead>
                                 <tr>
-                                    <th style="width:25%">Description</th>
-                                    <th style="width:12%">HSN</th>
-                                    <th style="width:8%">Qty</th>
-                                    <th style="width:12%">Rate (Rs)</th>
-                                    <th style="width:8%">GST %</th>
-                                    <th style="width:8%">Disc %</th>
-                                    <th style="width:12%">Amount</th>
-                                    <th style="width:5%"></th>
+                                    <th style="width:22%">Description</th>
+                                    <th style="width:10%">HSN</th>
+                                    <th style="width:7%">Qty</th>
+                                    <th style="width:11%">Rate (Rs)</th>
+                                    <th style="width:7%">GST %</th>
+                                    <th style="width:7%">Disc %</th>
+                                    <th style="width:11%">Amount</th>
+                                    <th style="width:9%">Tax</th>
+                                    <th style="width:4%"></th>
                                 </tr>
                             </thead>
-                            <tbody id="itemsBody"></tbody>
+                            <tbody id="itemsTableBody"></tbody>
                         </table>
                     </div>
                     <button class="btn btn-secondary add-item-btn" onclick="addItem()"><i class="fas fa-plus"></i> Add Item</button>
+                    <!-- Invoice running totals -->
+                    <div style="margin-top:0.9rem;display:flex;justify-content:flex-end">
+                        <div style="min-width:220px;font-size:0.82rem">
+                            <div style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--glass-border);color:var(--gray)">
+                                <span>Subtotal</span><span id="invSubtotal" style="color:var(--white);font-weight:600">Rs 0.00</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--glass-border);color:var(--gray)">
+                                <span>Total GST</span><span id="invTotalGST" style="color:var(--warning);font-weight:600">Rs 0.00</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;padding:0.4rem 0;color:var(--gold);font-weight:700;font-size:0.95rem">
+                                <span>Grand Total</span><span id="invGrandTotal">Rs 0.00</span>
+                            </div>
+                            <div id="invAmountWords" style="font-size:0.68rem;color:var(--gray);margin-top:0.2rem;text-align:right;font-style:italic"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-title"><i class="fas fa-shipping-fast"></i> Additional Charges</div>
@@ -834,7 +850,7 @@
                 </div>
                 <div id="invoicePreview" style="display:none">
                     <div class="card-title" style="margin-bottom:0.8rem"><i class="fas fa-file-invoice"></i> Invoice Preview</div>
-                    <div class="invoice-preview" id="invoiceContent"></div>
+                    <div class="invoice-preview" id="invoicePreviewContent"></div>
                 </div>
             </div>
 
@@ -856,7 +872,7 @@
                         <button class="sub-tab" onclick="filterInvoiceStatus('pending')">Pending</button>
                         <button class="sub-tab" onclick="filterInvoiceStatus('overdue')">Overdue</button>
                     </div>
-                    <div id="invoicesList"></div>
+                    <div id="savedInvoicesList"></div>
                 </div>
             </div>
 
@@ -1256,6 +1272,7 @@
         </main>
     </div>
 
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
 
