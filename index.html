@@ -210,86 +210,69 @@
 
             <!-- DASHBOARD TAB -->
             <div id="dashboard-tab" class="tab-content active">
-                <!-- Quick Action Buttons -->
+                <!-- Quick Actions Toolbar -->
                 <div class="quick-actions">
-                    <button class="quick-action-btn" onclick="switchTab('invoice')">
-                        <i class="fas fa-plus-circle"></i> New Invoice
+                    <button class="qa-primary" onclick="switchTab('invoice')">
+                        <i class="fas fa-plus"></i> New Invoice
                     </button>
-                    <button class="quick-action-btn" onclick="switchTab('calculator')">
+                    <button class="qa-secondary" onclick="switchTab('calculator')">
                         <i class="fas fa-calculator"></i> GST Calculator
                     </button>
-                    <button class="quick-action-btn" onclick="switchTab('clients')">
+                    <button class="qa-secondary" onclick="switchTab('clients')">
                         <i class="fas fa-user-plus"></i> Add Client
                     </button>
-                    <button class="quick-action-btn" onclick="switchTab('products')">
-                        <i class="fas fa-box-open"></i> Add Product
+                    <button class="qa-secondary" onclick="switchTab('products')">
+                        <i class="fas fa-box"></i> Add Product
                     </button>
-                    <button class="quick-action-btn" onclick="switchTab('reports')">
-                        <i class="fas fa-chart-bar"></i> View Reports
+                    <button class="qa-secondary" onclick="switchTab('reports')">
+                        <i class="fas fa-chart-bar"></i> Reports
                     </button>
-                    <button class="quick-action-btn" onclick="backupData()">
-                        <i class="fas fa-download"></i> Backup Data
+                    <button class="qa-secondary" onclick="backupData()">
+                        <i class="fas fa-download"></i> Backup
                     </button>
                 </div>
 
-                <!-- Business Performance Cards -->
-                <div class="dashboard-grid">
-                    <div class="dash-col-3">
-                        <div class="performance-card">
-                            <div class="perf-header">
-                                <span class="perf-title">Today's Sales</span>
-                                <div class="perf-icon gold" style="background:rgba(201,168,76,0.15);color:var(--gold)"><i class="fas fa-rupee-sign"></i></div>
-                            </div>
-                            <div class="perf-value" id="dashTodaySales">Rs0.00</div>
-                            <div class="perf-sub">
-                                <span class="perf-trend up" id="dashSalesTrend"><i class="fas fa-arrow-up"></i> <span id="dashSalesChange">0%</span></span>
-                                <span style="color:var(--gray)"> vs yesterday</span>
-                            </div>
-                            <div class="perf-progress"><div class="perf-progress-fill" id="todaySalesProgress" style="width:0%;background:var(--gold)"></div></div>
+                <!-- Business Overview Bar -->
+                <div class="overview-bar" style="margin-bottom:12px">
+                    <div class="overview-item">
+                        <div class="ov-label">Today's Sales</div>
+                        <div class="ov-value" id="dashTodaySales">₹0</div>
+                        <div class="ov-sub">
+                            <span class="trend-flat" id="dashSalesTrend"><span id="dashSalesChange">—</span></span>
+                            <span>vs yesterday</span>
                         </div>
                     </div>
-                    <div class="dash-col-3">
-                        <div class="performance-card">
-                            <div class="perf-header">
-                                <span class="perf-title">This Month</span>
-                                <div class="perf-icon info" style="background:rgba(52,152,219,0.15);color:var(--info)"><i class="fas fa-calendar-alt"></i></div>
-                            </div>
-                            <div class="perf-value" id="dashMonthSales">Rs0.00</div>
-                            <div class="perf-sub">
-                                <span class="perf-trend up" id="dashMonthTrend"><i class="fas fa-arrow-up"></i> <span id="dashMonthChange">0%</span></span>
-                                <span style="color:var(--gray)"> vs last month</span>
-                            </div>
-                            <div class="perf-progress"><div class="perf-progress-fill" id="monthSalesProgress" style="width:0%;background:var(--info)"></div></div>
+                    <div class="overview-item">
+                        <div class="ov-label">This Month</div>
+                        <div class="ov-value" id="dashMonthSales">₹0</div>
+                        <div class="ov-sub">
+                            <span class="trend-flat" id="dashMonthTrend"><span id="dashMonthChange">—</span></span>
+                            <span>vs last month</span>
                         </div>
                     </div>
-                    <div class="dash-col-3">
-                        <div class="performance-card">
-                            <div class="perf-header">
-                                <span class="perf-title">Pending Amount</span>
-                                <div class="perf-icon danger" style="background:rgba(231,76,60,0.15);color:var(--danger)"><i class="fas fa-clock"></i></div>
-                            </div>
-                            <div class="perf-value" id="dashPending">Rs0.00</div>
-                            <div class="perf-sub">
-                                <span class="perf-trend down" id="dashPendingTrend"><i class="fas fa-exclamation-circle"></i> <span id="dashPendingCount">0</span> invoices</span>
-                            </div>
-                            <div class="perf-progress"><div class="perf-progress-fill" id="pendingProgress" style="width:0%;background:var(--danger)"></div></div>
+                    <div class="overview-item">
+                        <div class="ov-label">Pending</div>
+                        <div class="ov-value" id="dashPending" style="color:var(--c-warning)">₹0</div>
+                        <div class="ov-sub">
+                            <span id="dashPendingCount">0</span> invoices outstanding
                         </div>
                     </div>
-                    <div class="dash-col-3">
-                        <div class="performance-card">
-                            <div class="perf-header">
-                                <span class="perf-title">Collection Rate</span>
-                                <div class="perf-icon success" style="background:rgba(46,204,113,0.15);color:var(--success)"><i class="fas fa-check-circle"></i></div>
-                            </div>
-                            <div class="perf-value" id="dashCollectionRate">0%</div>
-                            <div class="perf-sub">
-                                <span class="perf-trend up" id="dashCollectionTrend"><i class="fas fa-arrow-up"></i> <span id="dashPaidAmount">Rs0.00</span></span>
-                                <span style="color:var(--gray)"> collected</span>
-                            </div>
-                            <div class="perf-progress"><div class="perf-progress-fill" id="collectionProgress" style="width:0%;background:var(--success)"></div></div>
+                    <div class="overview-item">
+                        <div class="ov-label">Collection Rate</div>
+                        <div class="ov-value" id="dashCollectionRate" style="color:var(--c-success)">0%</div>
+                        <div class="ov-sub">
+                            <span id="dashPaidAmount">₹0</span> collected
                         </div>
                     </div>
                 </div>
+
+                <!-- Hidden elements kept for JS compatibility (dashboard.js reads these) -->
+                <span style="display:none" id="dashPendingTrend"></span>
+                <span style="display:none" id="dashCollectionTrend"></span>
+                <span style="display:none" id="todaySalesProgress"></span>
+                <span style="display:none" id="monthSalesProgress"></span>
+                <span style="display:none" id="pendingProgress"></span>
+                <span style="display:none" id="collectionProgress"></span>
 
                 <!-- Sales Growth Indicator -->
                 <div class="dashboard-grid">
