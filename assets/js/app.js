@@ -1,7 +1,7 @@
 /**
  * Ledgerix - Application Entry Point
- * Bootstraps all modules and exposes a single global namespace (_ledgerix)
- * so that existing HTML onclick handlers continue to work unchanged.
+ * v2.2 boot fix: splash is always dismissed FIRST, then PIN overlay shows.
+ * checkPIN() always resolves (never hangs). Every error path reaches hideSplash.
  */
 
 'use strict';
@@ -24,7 +24,7 @@ import { addNotification, updateNotificationBadge, renderNotifications,
          markRead, toggleNotifications, checkPaymentReminders } from './modules/notifications.js';
 import { saveProfile, loadProfileBanner, loadProfileForm,
          handleLogoUpload, handleSigUpload }        from './modules/profile.js';
-import { saveSettings, togglePIN, savePIN }         from './modules/settings.js';
+import { saveSettings, togglePIN, savePIN, removePINFromSettings } from './modules/settings.js';
 import { setGSTType, setQuickRate, calculateGST,
          clearCalculator, renderHistory, loadHistory, clearHistory } from './modules/gst.js';
 import { generateReport, exportReportCSV, exportReportExcel, printReport } from './modules/reports.js';
@@ -35,22 +35,14 @@ import { downloadPDF, previewInvoice, closePreview } from './modules/pdf.js';
 import { handleOCRUpload, startOCRScan, createInvoiceFromOCR, addOCRItem,
          removeOCRItem, updateOCRItem, clearOCR }   from './modules/ocr.js';
 import { today, addDays }       from './utils/helpers.js';
+import AppConfig               from '../../config/app.config.js';
 
 // ── Global namespace bridge ───────────────────────────────────────────────────
-// All HTML onclick="..." attributes call through window._ledgerix.*
-// This preserves 100% compatibility without touching the HTML.
 
 window._ledgerix = {
-  // Navigation
-  nav: { switchTab, closeModal, closeModalDirect, toggleSidebar },
-
-  // UI
-  ui:  { showToast, setTheme, toggleThemeMenu },
-
-  // Dashboard
+  nav:       { switchTab, closeModal, closeModalDirect, toggleSidebar },
+  ui:        { showToast, setTheme, toggleThemeMenu },
   dashboard: { updateDashboard },
-
-  // Invoice
   invoice: {
     addItem, removeItem, updateItem, saveInvoice, resetInvoice,
     renderItems, renderInvoicesList, filterInvoiceStatus, filterInvoices,
@@ -58,49 +50,25 @@ window._ledgerix = {
     autoSaveInvoice, getInvoiceData, generateInvoiceNumber,
     downloadPDF, previewInvoice, closePreview,
   },
-
-  // Clients
-  clients: { renderClients, addNewClient, deleteClient, useClient, selectClient,
-             searchClients, closeClientSearch, saveCurrentClient, filterClientList },
-
-  // Products
+  clients:  { renderClients, addNewClient, deleteClient, useClient, selectClient,
+              searchClients, closeClientSearch, saveCurrentClient, filterClientList },
   products: { renderProducts, addNewProduct, deleteProduct, addProductToInvoice,
               searchProducts, closeProductSearch, filterProductList },
-
-  // Notifications
   notifications: { addNotification, updateNotificationBadge, renderNotifications,
                    markRead, toggleNotifications, checkPaymentReminders },
-
-  // Profile
-  profile: { saveProfile, loadProfileBanner, loadProfileForm,
-             handleLogoUpload, handleSigUpload },
-
-  // Settings
-  settings: { saveSettings, togglePIN, savePIN },
-
-  // GST Calculator
-  gst: { setGSTType, setQuickRate, calculateGST, clearCalculator,
-         renderHistory, loadHistory, clearHistory },
-
-  // Reports
-  reports: { generateReport, exportReportCSV, exportReportExcel, printReport },
-
-  // Analytics
-  analytics: { renderAnalytics },
-
-  // Search
-  search: { openGlobalSearch, closeGlobalSearch, performGlobalSearch },
-
-  // Backup
-  backup: { backupData, restoreData, clearAllData },
-
-  // OCR
-  ocr: { handleOCRUpload, startOCRScan, createInvoiceFromOCR, addOCRItem,
-         removeOCRItem, updateOCRItem, clearOCR },
+  profile:  { saveProfile, loadProfileBanner, loadProfileForm, handleLogoUpload, handleSigUpload },
+  settings: { saveSettings, togglePIN, savePIN, removePINFromSettings },
+  gst:      { setGSTType, setQuickRate, calculateGST, clearCalculator,
+              renderHistory, loadHistory, clearHistory },
+  reports:  { generateReport, exportReportCSV, exportReportExcel, printReport },
+  analytics:{ renderAnalytics },
+  search:   { openGlobalSearch, closeGlobalSearch, performGlobalSearch },
+  backup:   { backupData, restoreData, clearAllData },
+  ocr:      { handleOCRUpload, startOCRScan, createInvoiceFromOCR, addOCRItem,
+              removeOCRItem, updateOCRItem, clearOCR },
 };
 
-// ── Convenience top-level shims (called directly from HTML onclick) ────────────
-// These match the original monolithic function names exactly.
+// ── Flat shims for HTML onclick compatibility ─────────────────────────────────
 
 window.switchTab             = switchTab;
 window.toggleSidebar         = toggleSidebar;
@@ -112,9 +80,7 @@ window.closeGlobalSearch     = closeGlobalSearch;
 window.performGlobalSearch   = performGlobalSearch;
 window.toggleNotifications   = toggleNotifications;
 window.markRead              = markRead;
-
 window.updateDashboard       = updateDashboard;
-
 window.addItem               = addItem;
 window.removeItem            = removeItem;
 window.updateItem            = updateItem;
@@ -130,7 +96,6 @@ window.autoSaveInvoice       = autoSaveInvoice;
 window.downloadPDF           = downloadPDF;
 window.previewInvoice        = previewInvoice;
 window.closePreview          = closePreview;
-
 window.addNewClient          = addNewClient;
 window.deleteClient          = deleteClient;
 window.useClient             = useClient;
@@ -139,98 +104,98 @@ window.searchClients         = searchClients;
 window.closeClientSearch     = closeClientSearch;
 window.saveCurrentClient     = saveCurrentClient;
 window.filterClientList      = filterClientList;
-
 window.addNewProduct         = addNewProduct;
 window.deleteProduct         = deleteProduct;
 window.addProductToInvoice   = addProductToInvoice;
 window.searchProducts        = searchProducts;
 window.closeProductSearch    = closeProductSearch;
 window.filterProductList     = filterProductList;
-
 window.saveProfile           = saveProfile;
 window.handleLogoUpload      = handleLogoUpload;
 window.handleSigUpload       = handleSigUpload;
-
 window.saveSettings          = saveSettings;
 window.togglePIN             = togglePIN;
 window.savePIN               = savePIN;
-
+window.removePINFromSettings = removePINFromSettings;
 window.setGSTType            = setGSTType;
 window.setQuickRate          = setQuickRate;
 window.calculateGST          = calculateGST;
 window.clearCalculator       = clearCalculator;
 window.loadHistory           = loadHistory;
 window.clearHistory          = clearHistory;
-
 window.generateReport        = generateReport;
 window.exportReportCSV       = exportReportCSV;
 window.exportReportExcel     = exportReportExcel;
 window.printReport           = printReport;
-
 window.renderAnalytics       = renderAnalytics;
-
 window.backupData            = backupData;
 window.restoreData           = restoreData;
 window.clearAllData          = clearAllData;
 
-// ── Missing bridge shims (called from HTML but not previously bridged) ─────────
+// ── Bridge shims for functions called from HTML ───────────────────────────────
 
-// Invoice Preview/Print — HTML calls generateInvoice() & printInvoice()
-window.generateInvoice       = previewInvoice;  // alias
+window.generateInvoice       = previewInvoice;
 window.printInvoice          = function() { window.print(); };
 
-// Profile
 window.clearProfile          = function() {
   ['profileName','profileGSTIN','profileAddr','profilePhone','profileEmail',
    'profilePrefix','profileFY','profileBank','profileAccount','profileIFSC','profileUPI']
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  document.getElementById('logoPreview')?.style && (document.getElementById('logoPreview').style.display = 'none');
-  document.getElementById('sigPreview')?.style  && (document.getElementById('sigPreview').style.display = 'none');
+  const lp = document.getElementById('logoPreview');
+  const sp = document.getElementById('sigPreview');
+  if (lp) lp.style.display = 'none';
+  if (sp) sp.style.display = 'none';
 };
 
-// Settings
-window.toggleGlobalSearch   = openGlobalSearch;  // alias
-window.installApp           = function() {
-  const btn = document.getElementById('btnInstallApp');
+window.toggleGlobalSearch    = openGlobalSearch;
+
+// PWA install — deferred prompt captured in beforeinstallprompt listener below
+window.installApp            = function() {
   if (window._deferredInstallPrompt) {
     window._deferredInstallPrompt.prompt();
-    window._deferredInstallPrompt.userChoice.then(() => { window._deferredInstallPrompt = null; if (btn) btn.disabled = true; });
-  } else { showToast('App already installed or not available', 'info'); }
+    window._deferredInstallPrompt.userChoice.then(choice => {
+      window._deferredInstallPrompt = null;
+      const btn = document.getElementById('btnInstallApp');
+      if (btn) {
+        btn.disabled     = choice.outcome === 'accepted';
+        btn.textContent  = choice.outcome === 'accepted' ? 'Installed' : 'Install App';
+      }
+    });
+  } else {
+    // PWA already installed or browser doesn't support install prompt
+    showToast('App is already installed or unavailable in this browser', 'info');
+  }
 };
-window.checkOfflineStatus   = function() {
-  showToast(navigator.onLine ? 'You are online' : 'You are offline', navigator.onLine ? 'success' : 'warning');
-};
-window.exportExcel          = function() { showToast('Use Reports tab to export Excel', 'info'); };
 
-// Reports
-window.exportReportPDF      = function() { window.print(); };
-window.onReportTypeChange   = function() { /* handled by generateReport */ };
-window.resetReportDates     = function() {
-  const t = today();
+// Check connection — uses navigator.onLine for accurate offline-first status
+window.checkOfflineStatus    = function() {
+  const online  = navigator.onLine;
+  const offBar  = document.getElementById('offlineBar');
+  if (online) {
+    offBar?.classList.remove('active');
+    showToast('✓ You are online', 'success');
+  } else {
+    offBar?.classList.add('active');
+    showToast('You are offline — Ledgerix continues to work locally', 'warning');
+  }
+};
+
+window.dismissInstall        = function() {
+  document.getElementById('installBanner')?.classList.remove('active');
+};
+
+window.exportExcel           = function() { showToast('Use Reports tab to export Excel', 'info'); };
+window.exportReportPDF       = function() { window.print(); };
+window.onReportTypeChange    = function() { /* handled by generateReport */ };
+window.resetReportDates      = function() {
+  const t    = today();
   const from = document.getElementById('reportFromDate');
   const to   = document.getElementById('reportToDate');
   if (from) from.value = addDays(t, -30);
   if (to)   to.value   = t;
 };
 
-// OCR — HTML uses addOCROItem (typo with O) — bridge both spellings
 window.addOCROItem           = addOCRItem;
-
-// Backup restore modal
-window.showRestoreModal      = function() {
-  const el = document.getElementById('modalContent');
-  const title = document.getElementById('modalTitle');
-  if (title) title.textContent = 'Restore Backup';
-  if (el) el.innerHTML = `
-    <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1rem">Select your Ledgerix backup JSON file.</p>
-    <input type="file" id="restoreFileInput" accept=".json" class="form-input" style="margin-bottom:0.8rem">
-    <button class="btn btn-primary" style="width:100%" onclick="restoreData(document.getElementById('restoreFileInput').files[0])">
-      <i class="fas fa-upload"></i> Restore Now
-    </button>
-  `;
-  document.getElementById('modalOverlay')?.classList.add('active');
-};
-
 window.handleOCRUpload       = handleOCRUpload;
 window.startOCRScan          = startOCRScan;
 window.createInvoiceFromOCR  = createInvoiceFromOCR;
@@ -239,19 +204,55 @@ window.removeOCRItem         = removeOCRItem;
 window.updateOCRItem         = updateOCRItem;
 window.clearOCR              = clearOCR;
 
-// ── Application Bootstrap ────────────────────────────────────────────────────
+window.showRestoreModal      = function() {
+  const el    = document.getElementById('modalContent');
+  const title = document.getElementById('modalTitle');
+  if (title) title.textContent = 'Restore Backup';
+  if (el) el.innerHTML = `
+    <p style="color:var(--c-text-mute);font-size:0.85rem;margin-bottom:1rem">Select your Ledgerix backup JSON file.</p>
+    <input type="file" id="restoreFileInput" accept=".json" class="form-input" style="margin-bottom:0.8rem"
+      onchange="restoreData(this)">
+    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('restoreFileInput').click()">
+      <i class="fas fa-upload"></i> Select Backup File
+    </button>
+  `;
+  document.getElementById('modalOverlay')?.classList.add('active');
+};
+
+// ── Application Bootstrap ─────────────────────────────────────────────────────
+//
+// Boot sequence (v2.2 fixed order):
+//   1. DOMContentLoaded fires
+//   2. hideSplash() — always dismiss splash immediately (short delay for first-time UX)
+//   3. checkPIN()   — shows PIN overlay if PIN is set; ALWAYS resolves, never hangs
+//   4. loadAllData()— decrypt & hydrate state
+//   5. Init UI
+//
+// If any step throws, the catch ensures the app still mounts in a usable state.
+// hideSplash is called BEFORE checkPIN so:
+//   - splash disappears on schedule
+//   - PIN overlay appears cleanly on top without being hidden behind splash z-index
 
 document.addEventListener('DOMContentLoaded', async function () {
-  try {
-    await checkPIN();         // must be first — blocks until PIN verified
-    await loadAllData();      // decrypt and hydrate state
 
-    // Set default form dates
+  // Step 1: Always dismiss the splash screen first.
+  // This guarantees the splash NEVER hangs regardless of PIN or error state.
+  hideSplash();
+
+  try {
+    // Step 2: If PIN is set, show the unlock overlay.
+    // checkPIN() always resolves — it never hangs or rejects permanently.
+    await checkPIN();
+
+    // Step 3: Decrypt and hydrate all application state.
+    await loadAllData();
+
+    // Step 4: Init form defaults
+    const t = today();
     const invDate    = document.getElementById('invDate');
     const invDueDate = document.getElementById('invDueDate');
     const rptFrom    = document.getElementById('reportFromDate');
     const rptTo      = document.getElementById('reportToDate');
-    const t = today();
     if (invDate)    invDate.value    = t;
     if (invDueDate) invDueDate.value = addDays(t, 7);
     if (rptFrom)    rptFrom.value    = addDays(t, -30);
@@ -259,18 +260,25 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Set invoice number
     const invNum = document.getElementById('invNumber');
-    if (invNum) {
-      const { generateInvoiceNumber } = await import('./modules/invoice.js');
-      invNum.value = generateInvoiceNumber();
-    }
+    if (invNum) invNum.value = generateInvoiceNumber();
 
+    // Step 5: Render UI
     renderItems();
     updateDashboard();
     setupOfflineDetection();
     renderNotifications();
 
-    // Lazy: check payment reminders after 2.5s
+    // Lazy: payment reminders after short delay
     setTimeout(() => checkPaymentReminders(), 2500);
+
+    // Sync PIN toggle UI state
+    const pinEnabled = document.getElementById('pinEnabled');
+    const pinSetup   = document.getElementById('pinSetup');
+    const pinRemove  = document.getElementById('pinRemove');
+    const hasPIN     = !!localStorage.getItem(AppConfig.STORAGE_KEYS.PIN);
+    if (pinEnabled) pinEnabled.checked = hasPIN;
+    if (pinSetup)   pinSetup.style.display  = 'none';
+    if (pinRemove)  pinRemove.style.display  = hasPIN ? 'block' : 'none';
 
     // Keyboard shortcuts
     document.addEventListener('keydown', e => {
@@ -285,18 +293,34 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     });
 
-    // Sidebar overlay click
+    // Sidebar overlay
     document.getElementById('sidebarOverlay')?.addEventListener('click', toggleSidebar);
 
-    // Modal overlay click
-    document.getElementById('modalOverlay')?.addEventListener('click', closeModal);
-
-    // Invoice field change → auto-save
+    // Invoice auto-save
     document.getElementById('invoiceForm')?.addEventListener('change', autoSaveInvoice);
 
   } catch (e) {
     console.error('[App] Startup error:', e);
-  } finally {
-    hideSplash(); // always hide splash regardless of errors
+    // Even on error, the splash is already hidden (step 1 above), so the app
+    // remains accessible — user sees whatever state loaded before the error.
   }
+});
+
+// ── PWA install prompt capture ────────────────────────────────────────────────
+
+window._deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  window._deferredInstallPrompt = e;
+  // Show install banner if present
+  document.getElementById('installBanner')?.classList.add('active');
+  const btn = document.getElementById('btnInstallApp');
+  if (btn) btn.disabled = false;
+});
+
+window.addEventListener('appinstalled', () => {
+  window._deferredInstallPrompt = null;
+  document.getElementById('installBanner')?.classList.remove('active');
+  showToast('Ledgerix installed successfully!', 'success');
 });

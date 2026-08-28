@@ -73,7 +73,8 @@ const AppConfig = {
   //   jsPDF-AutoTable- https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js
   //   QRCode.js      - https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js
   // Optional (lazy-loaded on first use):
-  //   Tesseract.js   - https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js
+  //   Tesseract.js   - https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js
+  //                    (v4 used: exposes Tesseract.recognize() global; v5 removed this API)
   // Font dependencies (CDN, network-required):
   //   Google Fonts   - Poppins, Playfair Display
   //   Font Awesome 6 - woff2 files from cdnjs.cloudflare.com

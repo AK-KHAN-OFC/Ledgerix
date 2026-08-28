@@ -1,5 +1,8 @@
 /**
  * Ledgerix - Products Module
+ * v2.3 fix: searchProducts() now reads from the actual HTML id="productSearch"
+ *           (was reading id="productSearchInput" which doesn't exist).
+ *           Also accepts the search value as a direct argument (HTML passes this.value).
  */
 
 'use strict';
@@ -14,35 +17,36 @@ export function renderProducts() {
   const list = document.getElementById('productsList');
   if (!list) return;
 
-  const q = (document.getElementById('productSearch')?.value || '').toLowerCase();
+  const q        = (document.getElementById('productSearch')?.value || '').toLowerCase();
   const products = q
     ? State.products.filter(p =>
-        p.name.toLowerCase().includes(q) || (p.hsn && p.hsn.toLowerCase().includes(q)))
+        p.name.toLowerCase().includes(q) ||
+        (p.hsn && p.hsn.toLowerCase().includes(q)))
     : State.products;
 
   list.innerHTML = products.length === 0
-    ? '<p style="color:var(--gray);text-align:center;padding:2rem">No products yet</p>'
+    ? `<div class="empty-state"><i class="fas fa-box-open"></i><h3>No products yet</h3><p>Add your first product below.</p></div>`
     : products.map(p => `
       <div class="product-card">
         <div class="card-info">
           <h4>${esc(p.name)}</h4>
-          <p>HSN: ${esc(p.hsn || 'N/A')} | Rate: ${formatMoney(p.rate)} | GST: ${p.gst}% | Stock: ${p.stock}</p>
+          <p>HSN: ${esc(p.hsn || 'N/A')} | Rate: ${formatMoney(p.rate)} | GST: ${p.gst}% | Stock: ${p.stock || 0}</p>
         </div>
         <div class="card-actions">
-          <button class="btn btn-info btn-sm" onclick="window._ledgerix.products.addProductToInvoice(${p.id})"><i class="fas fa-plus"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="window._ledgerix.products.deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+          <button class="btn btn-info btn-sm" onclick="window._ledgerix.products.addProductToInvoice(${p.id})" title="Add to invoice"><i class="fas fa-plus"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="window._ledgerix.products.deleteProduct(${p.id})" title="Delete"><i class="fas fa-trash"></i></button>
         </div>
       </div>`).join('');
 }
 
 export function addNewProduct() {
   const name  = document.getElementById('newProductName')?.value.trim();
-  const hsn   = document.getElementById('newProductHSN')?.value.trim();
-  const rate  = parseFloat(document.getElementById('newProductRate')?.value) || 0;
-  const gst   = parseFloat(document.getElementById('newProductGST')?.value)  || 18;
-  const stock = parseInt(document.getElementById('newProductStock')?.value)   || 0;
+  const hsn   = document.getElementById('newProductHSN')?.value.trim()  || '';
+  const rate  = parseFloat(document.getElementById('newProductRate')?.value)  || 0;
+  const gst   = parseFloat(document.getElementById('newProductGST')?.value)   || 18;
+  const stock = parseInt(document.getElementById('newProductStock')?.value, 10) || 0;
 
-  if (!name) { showToast('Product name required!', 'error'); return; }
+  if (!name) { showToast('Product name is required', 'error'); return; }
 
   State.products.push({ id: nextId(), name, hsn, rate, gst, stock });
   saveProducts();
@@ -55,11 +59,11 @@ export function addNewProduct() {
 }
 
 export function deleteProduct(id) {
-  if (!confirm('Delete product?')) return;
+  if (!confirm('Delete this product?')) return;
   State.setProducts(State.products.filter(p => p.id !== id));
   saveProducts();
   renderProducts();
-  showToast('Product deleted!', 'warning');
+  showToast('Product deleted', 'warning');
 }
 
 export function addProductToInvoice(id) {
@@ -68,25 +72,53 @@ export function addProductToInvoice(id) {
   import('./invoice.js').then(m => {
     m.addItem(p.name, p.hsn || '', 1, p.rate, p.gst, 0);
     closeProductSearch();
+    // Clear the search input
+    const inp = document.getElementById('productSearch');
+    if (inp) inp.value = '';
+    showToast(`"${p.name}" added to invoice`, 'success');
+  }).catch(err => {
+    console.error('[Products] addProductToInvoice failed:', err);
+    showToast('Could not add product to invoice', 'error');
   });
 }
 
-export function searchProducts() {
-  const q       = document.getElementById('productSearchInput')?.value.toLowerCase();
+/**
+ * searchProducts — called from HTML as: oninput="searchProducts(this.value)"
+ * Accepts the search query directly as argument (more reliable than re-reading DOM).
+ * Also works when called with no argument (reads from #productSearch).
+ */
+export function searchProducts(queryArg) {
   const results = document.getElementById('productSearchResults');
   if (!results) return;
-  if (!q || q.length < 1) { results.style.display = 'none'; return; }
+
+  // Accept value passed directly from oninput, or read from the input element
+  const q = (queryArg !== undefined
+    ? String(queryArg)
+    : (document.getElementById('productSearch')?.value || '')
+  ).toLowerCase().trim();
+
+  if (q.length < 1) { results.style.display = 'none'; return; }
 
   const matches = State.products.filter(p =>
-    p.name.toLowerCase().includes(q) || (p.hsn && p.hsn.includes(q)));
+    p.name.toLowerCase().includes(q) ||
+    (p.hsn && p.hsn.toLowerCase().includes(q)));
 
-  if (!matches.length) { results.style.display = 'none'; return; }
+  if (!matches.length) {
+    results.style.display = 'block';
+    results.innerHTML = `<div class="product-item" style="color:var(--c-text-mute);cursor:default">
+      <span>No products match "${esc(q)}"</span>
+    </div>`;
+    return;
+  }
 
   results.style.display = 'block';
   results.innerHTML = matches.map(p => `
     <div class="product-item" onclick="window._ledgerix.products.addProductToInvoice(${p.id})" style="cursor:pointer">
-      <div><strong>${esc(p.name)}</strong><br><small>HSN: ${esc(p.hsn || 'N/A')} | ${formatMoney(p.rate)}</small></div>
-      <i class="fas fa-plus-circle" style="color:var(--gold)"></i>
+      <div>
+        <strong>${esc(p.name)}</strong>
+        <br><small style="color:var(--c-text-mute)">HSN: ${esc(p.hsn || '—')} · ${formatMoney(p.rate)} · GST ${p.gst}%</small>
+      </div>
+      <i class="fas fa-plus-circle" style="color:var(--c-gold)"></i>
     </div>`).join('');
 }
 

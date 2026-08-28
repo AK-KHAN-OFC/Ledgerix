@@ -1152,3 +1152,64 @@ body {
   .main-content { margin-left:0; max-width:100%; padding:0; }
   .invoice-preview { box-shadow:none; border:1px solid #ddd; }
 }
+
+/* ── Backward-compatible CSS variable aliases ─────────────────────────────────
+   JS modules generate innerHTML strings using these old variable names.
+   Map them to the v2.2 equivalents so inline styles still resolve correctly.
+   DO NOT REMOVE — these are required by dashboard.js, invoice.js, reports.js, search.js.
+   ──────────────────────────────────────────────────────────────────────────── */
+:root {
+  --gold:    var(--c-gold);
+  --gray:    var(--c-text-mute);
+  --white:   var(--c-text);
+  --success: var(--c-success);
+  --danger:  var(--c-danger);
+  --warning: var(--c-warning);
+  --info:    var(--c-info);
+  --purple:  var(--c-purple);
+  --teal:    var(--c-teal);
+  --navy:    var(--c-navy-800);
+}
+
+/* ── Invoice preview panel ────────────────────────────────────────────────────
+   Uses style.display (not classList.active) because the element starts with
+   inline style="display:none". The .active class approach cannot override
+   inline styles without !important, so pdf.js now sets style.display directly.
+   ──────────────────────────────────────────────────────────────────────────── */
+#invoicePreview {
+  margin-top: 16px;
+  /* display controlled by pdf.js via style.display = 'block' / 'none' */
+}
+
+/* ── Dashboard list items used in dashboard.js innerHTML ──────────────────── */
+.top-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 10px; border-radius: var(--r-sm);
+  background: var(--c-navy-800); border: 1px solid var(--c-border);
+  margin-bottom: 4px; transition: border-color 0.15s;
+}
+.top-item:hover { border-color: var(--c-border-lt); }
+.top-info { flex: 1; }
+.top-info strong { color: var(--c-text); font-size: var(--f-sm); display: block; font-weight: 600; }
+.top-info small  { color: var(--c-text-mute); font-size: var(--f-xs); }
+.top-amount { font-weight: 700; color: var(--c-gold); font-size: var(--f-sm); flex-shrink: 0; }
+
+.activity-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid var(--c-border);
+  font-size: var(--f-sm);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-item i { margin-top: 2px; flex-shrink: 0; }
+
+/* ── GST calc results grid fix (starts display:none, shown after first calc) ─ */
+#calcResults { display: none; margin-top: 12px; }
+
+/* ── History item (in GST calc) ───────────────────────────────────────────── */
+.history-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px; border-radius: var(--r-sm);
+  background: var(--c-navy-800); border: 1px solid var(--c-border);
+  margin-bottom: 4px; cursor: pointer; transition: border-color 0.15s;
+}
+.history-item:hover { border-color: var(--c-gold); }

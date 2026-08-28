@@ -832,8 +832,16 @@
                     <button class="btn btn-danger" onclick="resetInvoice()"><i class="fas fa-trash"></i> Reset</button>
                 </div>
                 <div id="invoicePreview" style="display:none">
-                    <div class="card-title" style="margin-bottom:0.8rem"><i class="fas fa-file-invoice"></i> Invoice Preview</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;padding:0.5rem 0;border-bottom:1px solid var(--c-border);position:sticky;top:52px;background:var(--s-bg);z-index:50">
+                        <span class="card-title" style="margin-bottom:0"><i class="fas fa-file-invoice"></i> Invoice Preview</span>
+                        <button class="btn btn-secondary btn-sm" onclick="closePreview()"><i class="fas fa-times"></i> Close Preview</button>
+                    </div>
                     <div class="invoice-preview" id="invoicePreviewContent"></div>
+                    <div style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap">
+                        <button class="btn btn-success" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                        <button class="btn btn-secondary" onclick="printInvoice()"><i class="fas fa-print"></i> Print</button>
+                        <button class="btn btn-secondary btn-sm" onclick="closePreview()"><i class="fas fa-times"></i> Close</button>
+                    </div>
                 </div>
             </div>
 
@@ -1214,15 +1222,19 @@
                                 <input type="checkbox" id="pinEnabled" onchange="togglePIN()">
                                 <span class="toggle-slider"></span>
                             </label>
-                            <span style="color:var(--gray)">Require PIN to open app</span>
+                            <span style="color:var(--c-text-mute)">Require PIN to open app</span>
                         </div>
                     </div>
                     <div id="pinSetup" style="display:none">
                         <div class="form-group">
                             <label class="form-label">Set 4-digit PIN</label>
-                            <input type="password" class="form-input" id="newPIN" maxlength="4" placeholder="****">
+                            <input type="password" class="form-input" id="newPIN" maxlength="4" placeholder="****" inputmode="numeric" pattern="[0-9]*" autocomplete="new-password">
                         </div>
-                        <button class="btn btn-primary" onclick="savePIN()"><i class="fas fa-lock"></i> Set PIN</button>
+                        <button class="btn btn-primary" onclick="savePIN()"><i class="fas fa-lock"></i> Save PIN</button>
+                    </div>
+                    <div id="pinRemove" style="display:none;margin-top:0.6rem">
+                        <p style="color:var(--c-success);font-size:0.82rem;margin-bottom:0.5rem"><i class="fas fa-check-circle"></i> PIN protection is active</p>
+                        <button class="btn btn-danger btn-sm" onclick="removePINFromSettings()"><i class="fas fa-lock-open"></i> Remove PIN</button>
                     </div>
                 </div>
                 <div class="card">
