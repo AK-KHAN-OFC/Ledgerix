@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- WCAG 1.4.4: pinch-to-zoom enabled -->
+    <!-- Force browsers not to serve stale cached HTML from HTTP cache -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- App version: v2.5 — bump this comment on every deploy to break GitHub Pages edge cache -->
     <meta name="theme-color" content="#0a1628">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1281,11 +1286,26 @@
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('./sw.js', { scope: './' })
         .then(function (reg) {
-          console.info('[PWA] Service worker registered:', reg.scope);
+          console.info('[PWA] SW registered:', reg.scope);
+          // Activate new SW immediately when found — forces fresh files on deploy
+          reg.addEventListener('updatefound', function () {
+            var nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener('statechange', function () {
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                nw.postMessage({ type: 'SKIP_WAITING' });
+              }
+            });
+          });
         })
         .catch(function (err) {
-          console.warn('[PWA] Service worker registration failed:', err);
+          console.warn('[PWA] SW registration failed:', err);
         });
+      // Reload when new SW takes control so fresh files are used
+      var refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (!refreshing) { refreshing = true; window.location.reload(); }
+      });
     });
   }
 </script>

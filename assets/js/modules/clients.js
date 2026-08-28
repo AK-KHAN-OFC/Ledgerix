@@ -117,12 +117,17 @@ export function selectClient(id) {
   showToast(`Client "${c.name}" selected`, 'info');
 }
 
-export function searchClients() {
-  const input   = document.getElementById('invClient');
+export function searchClients(queryArg) {
   const results = document.getElementById('clientSearchResults');
   if (!results) return;
 
-  const q = (input?.value || '').toLowerCase().trim();
+  // Accept value passed from oninput="searchClients(this.value)" (invoice tab invClient)
+  // OR from oninput="searchClients(this.value)" (clients tab clientSearch)
+  // OR fall back to reading invClient for backward compat
+  const q = (queryArg !== undefined
+    ? String(queryArg)
+    : (document.getElementById('invClient')?.value || '')
+  ).toLowerCase().trim();
   if (q.length < 1) { results.style.display = 'none'; return; }
 
   const matches = State.clients.filter(c =>

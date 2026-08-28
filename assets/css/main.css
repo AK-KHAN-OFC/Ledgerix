@@ -24,8 +24,8 @@
   --c-navy-600: #112540;
   --c-navy-500: #1a3050;
   --c-navy-400: #243d62;
-  --c-border:   #1e2d45;
-  --c-border-lt: #253550;
+  --c-border:   #253550;
+  --c-border-lt: #2e4068;
 
   --c-gold:     #c9a84c;
   --c-gold-lt:  #dfc06e;
@@ -34,7 +34,7 @@
 
   --c-text:     #d8dfe8;
   --c-text-dim: #8b95a8;
-  --c-text-mute:#4d5d73;
+  --c-text-mute: #7a8aa0;
 
   --c-success:  #27ae60;
   --c-danger:   #c0392b;
@@ -249,7 +249,7 @@ body {
 }
 .sidebar-item i {
   font-size: 12px; width:16px; text-align:center; flex-shrink:0;
-  color: var(--c-text-mute); transition: color 0.15s;
+  color: var(--c-text-dim); transition: color 0.15s;
 }
 .sidebar-item:hover {
   background: var(--c-navy-700); color: var(--c-text);
@@ -319,11 +319,11 @@ body {
 }
 
 .panel-title, .card-title {
-  font-size: var(--f-sm); font-weight:600; color: var(--c-text-dim);
+  font-size: var(--f-sm); font-weight:600; color: var(--c-text);
   margin-bottom: 12px; display:flex; align-items:center; gap:6px;
   text-transform:uppercase; letter-spacing:0.8px;
 }
-.panel-title i, .card-title i { font-size:11px; color: var(--c-text-mute); }
+.panel-title i, .card-title i { font-size:11px; color: var(--c-text-dim); }
 
 /* Section label — lighter than panel-title, for grouping within a panel */
 .section-label {

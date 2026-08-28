@@ -1,3 +1,11 @@
+
+// Handle SKIP_WAITING message from page — activates new SW immediately on deploy
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 /**
  * Ledgerix - Service Worker
  * Offline-first PWA cache strategy.
@@ -13,8 +21,8 @@
 
 'use strict';
 
-const CACHE_NAME     = 'ledgerix-v2-shell';
-const CDN_CACHE_NAME = 'ledgerix-v2-cdn';
+const CACHE_NAME     = 'ledgerix-v2.5-shell';
+const CDN_CACHE_NAME = 'ledgerix-v2.5-cdn';
 
 // App shell — served from cache first
 const SHELL_ASSETS = [

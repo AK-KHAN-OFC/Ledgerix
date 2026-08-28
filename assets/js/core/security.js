@@ -188,7 +188,7 @@ export function checkPIN() {
         'flex-direction:column',
         'align-items:center',
         'justify-content:center',
-        'z-index:99999',
+        'z-index:100001',
         'gap:14px',
         'font-family:Poppins,sans-serif',
       ].join(';');
