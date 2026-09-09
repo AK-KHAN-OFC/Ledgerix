@@ -196,19 +196,22 @@ export function checkPIN() {
       overlay.innerHTML = `
         <div style="width:52px;height:52px;background:#c9a84c;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#0a1628;font-family:'Playfair Display',serif">L</div>
         <h2 style="color:#c9a84c;font-family:'Playfair Display',serif;font-size:22px;margin:0">Ledgerix</h2>
-        <p style="color:#8892a8;font-size:13px;margin:0">Enter your PIN to continue</p>
+        <p style="color:#8892a8;font-size:13px;margin:0">v2.6 — Enter your PIN to continue</p>
         <input id="pinInput" type="password" maxlength="4" inputmode="numeric" pattern="[0-9]*"
           style="background:#1a2842;border:1px solid #c9a84c;color:#f0f0f0;padding:10px 20px;border-radius:6px;font-size:22px;text-align:center;letter-spacing:8px;width:180px;outline:none;font-family:monospace"
           placeholder="••••" autocomplete="off">
         <p id="pinError" style="color:#e74c3c;font-size:12px;min-height:18px;margin:0"></p>
         <button id="pinUnlockBtn"
-          style="background:#c9a84c;color:#0a1628;border:none;padding:10px 28px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;font-family:Poppins,sans-serif">
+          style="background:#c9a84c;color:#0a1628;border:none;padding:10px 28px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;font-family:Poppins,sans-serif;min-width:180px">
           Unlock
         </button>
-        <button id="pinForgotBtn"
-          style="background:transparent;color:#8892a8;border:none;font-size:11px;cursor:pointer;text-decoration:underline;font-family:Poppins,sans-serif;margin-top:-6px">
-          Forgot PIN? Reset app data
-        </button>
+        <div style="border-top:1px solid #1a2842;width:180px;margin-top:8px;padding-top:12px;text-align:center">
+          <p style="color:#4d5d73;font-size:11px;margin:0 0 8px 0">Forgot your PIN?</p>
+          <button id="pinForgotBtn"
+            style="background:#1a2842;color:#e74c3c;border:1px solid #e74c3c;padding:7px 16px;border-radius:6px;font-size:11px;cursor:pointer;font-family:Poppins,sans-serif;width:180px">
+            Reset All Data &amp; Remove PIN
+          </button>
+        </div>
       `;
 
       document.body.appendChild(overlay);

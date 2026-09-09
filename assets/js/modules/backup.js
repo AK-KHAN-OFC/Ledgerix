@@ -39,7 +39,9 @@ function _stripImages(profile) {
 }
 
 export function restoreData(e) {
-  const file = e.target.files[0];
+  // e may be an Event (from onchange="restoreData(event)") or an HTMLInputElement
+  // Handle both safely
+  const file = (e && e.target ? e.target.files : e && e.files ? e.files : null)?.[0];
   if (!file) return;
   if (!file.name.endsWith('.json')) { showToast('Please select a JSON backup file!', 'error'); return; }
 

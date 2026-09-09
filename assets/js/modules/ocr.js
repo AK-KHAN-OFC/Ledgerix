@@ -97,7 +97,7 @@ export function handleOCRUpload(e) {
 
 export async function startOCRScan() {
   if (!State.ocrImageData) {
-    showToast('Please upload an image first', 'error');
+    showToast('Please upload an image first', 'warning');
     return;
   }
 
@@ -324,7 +324,7 @@ export function updateOCRCalculations() {
 
 export function createInvoiceFromOCR() {
   if (State.ocrDetectedItems.length === 0) {
-    showToast('No items to create invoice from', 'error');
+    showToast('No items to create invoice from', 'warning');
     return;
   }
   if (State.items.length > 0 && !confirm('Replace current invoice items with OCR results?')) return;

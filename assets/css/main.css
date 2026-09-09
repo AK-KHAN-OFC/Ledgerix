@@ -1154,21 +1154,34 @@ body {
 }
 
 /* ── Backward-compatible CSS variable aliases ─────────────────────────────────
-   JS modules generate innerHTML strings using these old variable names.
-   Map them to the v2.2 equivalents so inline styles still resolve correctly.
-   DO NOT REMOVE — these are required by dashboard.js, invoice.js, reports.js, search.js.
+   JS modules and HTML inline styles use these old variable names.
+   Map them to the v2.2 equivalents so everything resolves correctly.
+   DO NOT REMOVE.
    ──────────────────────────────────────────────────────────────────────────── */
 :root {
-  --gold:    var(--c-gold);
-  --gray:    var(--c-text-mute);
-  --white:   var(--c-text);
-  --success: var(--c-success);
-  --danger:  var(--c-danger);
-  --warning: var(--c-warning);
-  --info:    var(--c-info);
-  --purple:  var(--c-purple);
-  --teal:    var(--c-teal);
-  --navy:    var(--c-navy-800);
+  --gold:          var(--c-gold);
+  --gold-light:    var(--c-gold-lt);
+  --gray:          var(--c-text-mute);
+  --gray-light:    var(--c-text-dim);
+  --white:         var(--c-text);
+  --success:       var(--c-success);
+  --danger:        var(--c-danger);
+  --warning:       var(--c-warning);
+  --info:          var(--c-info);
+  --purple:        var(--c-purple);
+  --teal:          var(--c-teal);
+  --navy:          var(--c-navy-800);
+  --navy-light:    var(--c-navy-700);
+  --navy-lighter:  var(--c-navy-600);
+  --navy-dark:     var(--c-navy-900);
+  /* glass = semi-transparent surface overlay */
+  --glass:         rgba(255,255,255,0.04);
+  --glass-strong:  rgba(255,255,255,0.07);
+  --glass-border:  var(--c-border);
+  /* legacy shadow tokens */
+  --shadow-sm:     var(--e-sm);
+  --shadow-md:     var(--e-md);
+  --shadow-gold:   0 3px 14px rgba(201,168,76,0.18);
 }
 
 /* ── Invoice preview panel ────────────────────────────────────────────────────

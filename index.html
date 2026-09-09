@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <!-- App version: v2.5 — bump this comment on every deploy to break GitHub Pages edge cache -->
+    <!-- App version: v2.8 — bump this comment on every deploy to break GitHub Pages edge cache -->
     <meta name="theme-color" content="#0a1628">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -105,7 +105,7 @@
     <div class="splash-screen" id="splashScreen">
         <div class="splash-logo">L</div>
         <div class="splash-text">Ledgerix</div>
-        <div class="splash-sub">v2.0 Business Management</div>
+        <div class="splash-sub">v2.8 Business Suite</div>
         <div class="splash-loader"><div class="splash-loader-fill"></div></div>
     </div>
 
@@ -152,7 +152,7 @@
             <div class="logo-icon">L</div>
             <div>
                 <div class="logo-text">Ledgerix</div>
-                <div class="logo-sub">v2.0 Business Suite</div>
+                <div class="logo-sub">v2.8 Business Suite</div>
             </div>
         </div>
         <div class="header-actions">
@@ -173,39 +173,39 @@
     <div class="app-layout">
         <!-- Sidebar -->
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-item active" onclick="switchTab('dashboard')">
+            <div class="sidebar-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
                 <i class="fas fa-chart-line"></i> Dashboard
             </div>
-            <div class="sidebar-item" onclick="switchTab('scanner')">
+            <div class="sidebar-item" data-tab="scanner" onclick="switchTab('scanner')">
                 <i class="fas fa-camera"></i> OCR Scanner
             </div>
-            <div class="sidebar-item" onclick="switchTab('calculator')">
+            <div class="sidebar-item" data-tab="calculator" onclick="switchTab('calculator')">
                 <i class="fas fa-calculator"></i> GST Calculator
             </div>
-            <div class="sidebar-item" onclick="switchTab('invoice')">
+            <div class="sidebar-item" data-tab="invoice" onclick="switchTab('invoice')">
                 <i class="fas fa-file-invoice"></i> New Invoice
             </div>
-            <div class="sidebar-item" onclick="switchTab('invoices')">
+            <div class="sidebar-item" data-tab="invoices" onclick="switchTab('invoices')">
                 <i class="fas fa-folder-open"></i> All Invoices
             </div>
-            <div class="sidebar-item" onclick="switchTab('clients')">
+            <div class="sidebar-item" data-tab="clients" onclick="switchTab('clients')">
                 <i class="fas fa-users"></i> Clients
             </div>
-            <div class="sidebar-item" onclick="switchTab('products')">
+            <div class="sidebar-item" data-tab="products" onclick="switchTab('products')">
                 <i class="fas fa-boxes"></i> Products
             </div>
             <div class="sidebar-divider"></div>
             <div class="sidebar-label">Business</div>
-            <div class="sidebar-item" onclick="switchTab('reports')">
+            <div class="sidebar-item" data-tab="reports" onclick="switchTab('reports')">
                 <i class="fas fa-chart-bar"></i> Reports
             </div>
-            <div class="sidebar-item" onclick="switchTab('analytics')">
+            <div class="sidebar-item" data-tab="analytics" onclick="switchTab('analytics')">
                 <i class="fas fa-chart-pie"></i> Analytics
             </div>
-            <div class="sidebar-item" onclick="switchTab('profile')">
+            <div class="sidebar-item" data-tab="profile" onclick="switchTab('profile')">
                 <i class="fas fa-building"></i> My Business
             </div>
-            <div class="sidebar-item" onclick="switchTab('settings')">
+            <div class="sidebar-item" data-tab="settings" onclick="switchTab('settings')">
                 <i class="fas fa-sliders-h"></i> Settings
             </div>
         </nav>
@@ -786,6 +786,7 @@
                             <div style="display:flex;justify-content:space-between;padding:0.4rem 0;color:var(--gold);font-weight:700;font-size:0.95rem">
                                 <span>Grand Total</span><span id="invGrandTotal">Rs 0.00</span>
                             </div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--c-text-mute)"><span>Round Off</span><span id="invRoundDiff"></span></div>
                             <div id="invAmountWords" style="font-size:0.68rem;color:var(--gray);margin-top:0.2rem;text-align:right;font-style:italic"></div>
                         </div>
                     </div>
@@ -1174,7 +1175,7 @@
                         <div class="form-group">
                             <label class="form-label">Currency</label>
                             <select class="form-select" id="settingCurrency">
-                                <option value="Rs">Indian Rupee (Rs)</option>
+                                <option value="INR">Indian Rupee (₹)</option>
                                 <option value="$">US Dollar ($)</option>
                                 <option value="€">Euro (€)</option>
                             </select>
@@ -1266,7 +1267,7 @@
             </div>
 
             <footer class="footer">
-                <p><i class="fas fa-heart" style="color:var(--danger)"></i> Made for Indian Small Businesses | Ledgerix v2.0</p>
+                <p><i class="fas fa-heart" style="color:var(--danger)"></i> Made for Indian Small Businesses | Ledgerix v2.8</p>
                 <p style="margin-top:0.2rem;font-size:0.7rem">All data stored locally. Works offline. PWA Ready.</p>
             </footer>
         </main>

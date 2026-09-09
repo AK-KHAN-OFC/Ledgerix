@@ -17,7 +17,8 @@ export function renderClients() {
   const list = document.getElementById('clientsList');
   if (!list) return;
 
-  const q       = (document.getElementById('clientSearch')?.value || '').toLowerCase();
+  // clientListSearch = search in Clients tab; clientSearch = search in Invoice tab autofill
+  const q       = (document.getElementById('clientListSearch')?.value || document.getElementById('clientSearch')?.value || '').toLowerCase();
   const clients = q
     ? State.clients.filter(c =>
         c.name.toLowerCase().includes(q) ||
@@ -48,23 +49,23 @@ export async function addNewClient() {
   const email = document.getElementById('newClientEmail')?.value.trim();
 
   // Name is required
-  if (!name) { showToast('Client name is required', 'error'); return; }
+  if (!name) { showToast('Client name is required', 'warning'); return; }
 
   // GSTIN is optional — only validate format if provided
   if (gstin && !validateGSTIN(gstin)) {
-    showToast('Invalid GSTIN format. Expected: 22AAAAA0000A1Z5 (or leave blank)', 'error');
+    showToast('Invalid GSTIN format (e.g. 22AAAAA0000A1Z5) — leave blank if unknown', 'warning');
     return;
   }
 
   // Phone is optional — only validate if provided
   if (phone && !_validatePhoneLoose(phone)) {
-    showToast('Invalid phone number (min 10 digits)', 'error');
+    showToast('Invalid phone number', 'warning');
     return;
   }
 
   // Email is optional — only validate if provided
   if (email && !validateEmail(email)) {
-    showToast('Invalid email address', 'error');
+    showToast('Invalid email address', 'warning');
     return;
   }
 
@@ -154,7 +155,7 @@ export function closeClientSearch() {
 
 export async function saveCurrentClient() {
   const name = document.getElementById('invClient')?.value.trim();
-  if (!name) { showToast('Enter client name first!', 'error'); return; }
+  if (!name) { showToast('Enter client name first', 'warning'); return; }
   const data = {
     name,
     address: document.getElementById('invClientAddr')?.value.trim()  || '',

@@ -21,6 +21,12 @@ export function generateReport() {
 
   State.setCurrentReportData({ type, fromDate, toDate, invoices: filtered });
 
+  // Show report area, hide empty state
+  const reportContent = document.getElementById('reportContent');
+  const reportEmpty   = document.getElementById('reportEmpty');
+  if (reportContent) reportContent.style.display = 'block';
+  if (reportEmpty)   reportEmpty.style.display   = 'none';
+
   switch (type) {
     case 'daily':    renderDailyReport(filtered, fromDate, toDate);   break;
     case 'weekly':   renderWeeklyReport(filtered, fromDate, toDate);  break;
@@ -32,7 +38,6 @@ export function generateReport() {
     default: break;
   }
 
-  document.getElementById('reportActions')?.style.setProperty('display', 'flex');
   showToast('Report generated!', 'success');
 }
 
@@ -199,7 +204,7 @@ export function renderProductReport(invoices, from, to) {
 }
 
 export function exportReportCSV() {
-  if (!State.currentReportData) { showToast('Generate a report first!', 'error'); return; }
+  if (!State.currentReportData) { showToast('Generate a report first', 'warning'); return; }
   const table = document.getElementById('reportTable');
   if (!table) return;
   let csv = '';
@@ -216,7 +221,7 @@ export function exportReportCSV() {
 }
 
 export function exportReportExcel() {
-  if (!State.currentReportData) { showToast('Generate a report first!', 'error'); return; }
+  if (!State.currentReportData) { showToast('Generate a report first', 'warning'); return; }
   const table = document.getElementById('reportTable');
   if (!table) return;
   let tsv = '';
@@ -228,29 +233,10 @@ export function exportReportExcel() {
 }
 
 export function printReport() {
-  const reportEl = document.getElementById('reports-tab');
-  if (!reportEl) { window.print(); return; }
-  const printWin = window.open('', '_blank', 'width=900,height=700');
-  if (!printWin) { window.print(); return; }
-
-  const doc = printWin.document;
-  doc.title = 'Report - ' + (State.profile.name || 'Ledgerix');
-  const meta = doc.createElement('meta'); meta.setAttribute('charset','UTF-8'); doc.head.appendChild(meta);
-
-  const printStyle = doc.createElement('style');
-  printStyle.textContent = [
-    'body{font-family:sans-serif;background:#fff;color:#000;padding:1rem;margin:0}',
-    'table{width:100%;border-collapse:collapse;margin-top:0.5rem}',
-    'th,td{border:1px solid #ccc;padding:0.4rem 0.6rem;text-align:left;font-size:0.85rem}',
-    'th{background:#f0f0f0;font-weight:600}',
-    'tfoot td{font-weight:700;background:#f8f8f8}',
-    'h2,h3{margin:0.3rem 0}',
-    '.btn,.sidebar,.header,.fab-btn{display:none!important}',
-  ].join('\n');
-  doc.head.appendChild(printStyle);
-  doc.body.innerHTML = reportEl.innerHTML;
-
-  setTimeout(() => { try { printWin.print(); printWin.close(); } catch(e) {} }, 800);
+  // Use window.print() directly — avoids popup blocker issues on mobile.
+  // The report content is visible in the current tab; @media print CSS hides
+  // the sidebar, header, and action buttons.
+  window.print();
 }
 
 function _download(content, filename, mimeType) {

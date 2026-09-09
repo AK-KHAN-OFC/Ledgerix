@@ -53,8 +53,9 @@ export async function loadAllData() {
       if (el) el.value = State.settings.language;
     }
 
-    // Apply currency
+    // Apply currency (migrate legacy 'Rs' value to 'INR')
     if (State.settings.currency) {
+      if (State.settings.currency === 'Rs') State.settings.currency = 'INR';
       const el = document.getElementById('settingCurrency');
       if (el) el.value = State.settings.currency;
     }

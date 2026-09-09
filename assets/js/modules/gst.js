@@ -64,14 +64,18 @@ export function setQuickRate(rate, e) {
   const customGroup = document.getElementById('customRateGroup');
 
   if (rate === 'custom') {
-    // Show custom input, deselect all quick buttons
     if (customGroup) customGroup.style.display = 'block';
     document.getElementById('customRate')?.focus();
     return;
   }
 
   if (customGroup) customGroup.style.display = 'none';
-  if (e && e.target) e.target.classList.add('active');
+
+  // Mark the matching button active by rate value (e is not passed from HTML onclick)
+  document.querySelectorAll('.quick-rate-btn').forEach(b => {
+    const btnRate = parseFloat(b.textContent);
+    if (!isNaN(btnRate) && btnRate === parseFloat(rate)) b.classList.add('active');
+  });
 
   // Recalculate immediately
   const amt = parseFloat(document.getElementById('calcAmount')?.value) || 0;
@@ -85,7 +89,7 @@ export function calculateGST(saveToHistory = true) {
   const taxCategory = document.getElementById('taxCategory')?.value || 'regular';
 
   if (amount <= 0) {
-    if (saveToHistory) showToast('Enter a valid amount', 'error');
+    if (saveToHistory) showToast('Enter a valid amount', 'warning');
     return;
   }
 

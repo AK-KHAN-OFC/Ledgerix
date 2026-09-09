@@ -74,12 +74,18 @@ export function renderItems() {
 }
 
 function _updateTotals(subtotal, totalGST, grandTotal) {
+  const roundOff   = document.getElementById('invRoundOff')?.checked;
+  const rounded    = roundOff ? Math.round(grandTotal) : grandTotal;
+  const roundDiff  = rounded - grandTotal;
   function setEl(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
   setEl('invSubtotal',   formatMoney(subtotal));
   setEl('invTotalGST',   formatMoney(totalGST));
-  setEl('invGrandTotal', formatMoney(grandTotal));
+  setEl('invGrandTotal', formatMoney(rounded));
+  const rdEl = document.getElementById('invRoundDiff');
+  if (rdEl) rdEl.textContent = roundOff && Math.abs(roundDiff) > 0.001
+    ? (roundDiff > 0 ? '+' : '') + formatMoney(roundDiff) : '';
   const wordsEl = document.getElementById('invAmountWords');
-  if (wordsEl) wordsEl.textContent = numberToWords(Math.round(grandTotal)) + ' Rupees Only';
+  if (wordsEl) wordsEl.textContent = numberToWords(Math.round(rounded)) + ' Rupees Only';
 }
 
 // ── Auto-save draft ────────────────────────────────────────────────────────────
@@ -122,8 +128,8 @@ export function generateInvoiceNumber() {
 
 export function getInvoiceData() {
   const clientName = document.getElementById('invClient')?.value.trim();
-  if (!clientName) { showToast('Please enter client name!', 'error'); return null; }
-  if (State.items.length === 0) { showToast('Please add at least one item!', 'error'); return null; }
+  if (!clientName) { showToast('Please enter client name', 'warning'); return null; }
+  if (State.items.length === 0) { showToast('Please add at least one item', 'warning'); return null; }
 
   let subtotal = 0, totalGST = 0;
   const itemRows = State.items.map(it => {
@@ -157,7 +163,9 @@ export function getInvoiceData() {
     itemRows,
     subtotal:  subtotal.toFixed(2),
     totalGST:  totalGST.toFixed(2),
-    grandTotal: grandTotal.toFixed(2),
+    grandTotal: (document.getElementById('invRoundOff')?.checked
+      ? Math.round(grandTotal)
+      : grandTotal).toFixed(2),
     dueBadge: '',
   };
 }
@@ -239,10 +247,13 @@ export function renderInvoicesList() {
       </div>`).join('');
 }
 
-export function filterInvoiceStatus(status, e) {
+export function filterInvoiceStatus(status) {
   State.setCurrentInvoiceFilter(status);
-  document.querySelectorAll('#invoices-tab .sub-tab').forEach(t => t.classList.remove('active'));
-  if (e && e.target) e.target.classList.add('active');
+  // Highlight matching sub-tab by its onclick content (no event argument needed)
+  document.querySelectorAll('#invoices-tab .sub-tab').forEach(t => {
+    const onclick = t.getAttribute('onclick') || '';
+    t.classList.toggle('active', onclick.includes("'" + status + "'"));
+  });
   renderInvoicesList();
 }
 

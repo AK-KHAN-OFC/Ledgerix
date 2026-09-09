@@ -68,7 +68,6 @@ export function updateDashboard() {
   setEl('growthValue',      formatMoney(todaySales));
   setEl('growthPercent',    growthPercent + '%');
   setEl('growthSub',        growthPercent >= 0 ? '▲ vs yesterday' : '▼ vs yesterday');
-  setEl('paidUnpaidTotal',  formatMoney(totalAmount));
 
   // Sales change badge
   const scEl = document.getElementById('dashSalesChange');
@@ -83,27 +82,17 @@ export function updateDashboard() {
     mcEl.className   = 'badge ' + (mg >= 0 ? 'badge-paid' : 'badge-overdue');
   }
 
-  // Progress bars
-  const todayPct  = Math.min((todaySales  / AppConfig.DAILY_TARGET)   * 100, 100);
-  const monthPct  = Math.min((monthSales  / AppConfig.MONTHLY_TARGET) * 100, 100);
-  const el1 = document.getElementById('todayProgressBar');
-  const el2 = document.getElementById('monthProgressBar');
-  if (el1) el1.style.width = todayPct + '%';
-  if (el2) el2.style.width = monthPct + '%';
+
 
   // SVG growth circle
-  const circleEl = document.querySelector('.growth-circle-progress');
+  const circleEl = document.getElementById('growthCircle');
   if (circleEl) {
     const offset = AppConfig.SVG_CIRCLE_CIRC - (AppConfig.SVG_CIRCLE_CIRC * Math.min(Math.abs(growthPercent), 100) / 100);
     circleEl.style.strokeDashoffset = offset;
     circleEl.style.stroke = growthPercent >= 0 ? 'var(--success)' : 'var(--danger)';
   }
 
-  // Stats counters
-  setEl('statPaid',      paidCount);
-  setEl('statPending',   pendingCount);
-  setEl('statOverdue',   overdueCount);
-  setEl('statCancelled', cancelledCount);
+
 
   // Recent invoices
   const recentDiv = document.getElementById('recentInvoicesList');

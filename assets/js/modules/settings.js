@@ -52,12 +52,12 @@ export function togglePIN() {
  */
 export async function savePIN() {
   if (!window.crypto || !window.crypto.subtle) {
-    showToast('PIN requires a secure context (HTTPS)', 'error');
+    showToast('PIN requires HTTPS — not supported on plain HTTP', 'warning');
     return;
   }
   const pin = document.getElementById('newPIN')?.value;
   if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-    showToast('Enter 4-digit PIN!', 'error');
+    showToast('Enter a 4-digit PIN', 'warning');
     return;
   }
   await savePINToStorage(pin);

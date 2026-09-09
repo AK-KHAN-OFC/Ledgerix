@@ -17,7 +17,8 @@ export function renderProducts() {
   const list = document.getElementById('productsList');
   if (!list) return;
 
-  const q        = (document.getElementById('productSearch')?.value || '').toLowerCase();
+  // productListSearch = search in Products tab; productSearch = search in Invoice tab
+  const q        = (document.getElementById('productListSearch')?.value || document.getElementById('productSearch')?.value || '').toLowerCase();
   const products = q
     ? State.products.filter(p =>
         p.name.toLowerCase().includes(q) ||
@@ -46,7 +47,7 @@ export function addNewProduct() {
   const gst   = parseFloat(document.getElementById('newProductGST')?.value)   || 18;
   const stock = parseInt(document.getElementById('newProductStock')?.value, 10) || 0;
 
-  if (!name) { showToast('Product name is required', 'error'); return; }
+  if (!name) { showToast('Product name is required', 'warning'); return; }
 
   State.products.push({ id: nextId(), name, hsn, rate, gst, stock });
   saveProducts();

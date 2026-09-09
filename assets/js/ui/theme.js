@@ -19,5 +19,8 @@ export function setTheme(theme, silent = false) {
 }
 
 export function toggleThemeMenu() {
-  document.getElementById('themeMenu').classList.toggle('active');
+  // toggleThemeMenu is called from the header cog button.
+  // Themes are applied directly via setTheme() in the Settings tab.
+  // Switch to settings tab so the user can select a theme.
+  import('../ui/navigation.js').then(m => m.switchTab('settings'));
 }

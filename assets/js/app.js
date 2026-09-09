@@ -204,6 +204,15 @@ window.removeOCRItem         = removeOCRItem;
 window.updateOCRItem         = updateOCRItem;
 window.clearOCR              = clearOCR;
 
+// toggleSettings — switches to settings tab
+window.toggleSettings = function() { switchTab('settings'); };
+
+// generateInvoiceNumber — Auto button in invoice form refreshes the number
+window.generateInvoiceNumber = function() {
+  const el = document.getElementById('invNumber');
+  if (el) el.value = (window._ledgerix.invoice.generateInvoiceNumber || (() => ''))();
+};
+
 window.showRestoreModal      = function() {
   const el    = document.getElementById('modalContent');
   const title = document.getElementById('modalTitle');
@@ -211,7 +220,7 @@ window.showRestoreModal      = function() {
   if (el) el.innerHTML = `
     <p style="color:var(--c-text-mute);font-size:0.85rem;margin-bottom:1rem">Select your Ledgerix backup JSON file.</p>
     <input type="file" id="restoreFileInput" accept=".json" class="form-input" style="margin-bottom:0.8rem"
-      onchange="restoreData(this)">
+      onchange="restoreData(event)">
     <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('restoreFileInput').click()">
       <i class="fas fa-upload"></i> Select Backup File
     </button>
@@ -293,11 +302,22 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     });
 
+    // Click-outside to close notification panel (critical for mobile — no Escape key)
+    document.addEventListener('click', e => {
+      const panel  = document.getElementById('notificationPanel');
+      const btn    = document.querySelector('[onclick="toggleNotifications()"]');
+      if (panel && panel.classList.contains('active')) {
+        if (!panel.contains(e.target) && e.target !== btn && !btn?.contains(e.target)) {
+          panel.classList.remove('active');
+        }
+      }
+    }, { passive: true });
+
     // Sidebar overlay
     document.getElementById('sidebarOverlay')?.addEventListener('click', toggleSidebar);
 
-    // Invoice auto-save
-    document.getElementById('invoiceForm')?.addEventListener('change', autoSaveInvoice);
+    // Note: invoice auto-save is handled by individual onchange="autoSaveInvoice()" 
+    // attributes on each form field. No form wrapper ID is needed.
 
   } catch (e) {
     console.error('[App] Startup error:', e);

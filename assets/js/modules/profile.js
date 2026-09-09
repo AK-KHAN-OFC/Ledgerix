@@ -45,9 +45,9 @@ export async function saveProfile() {
   const gstin = document.getElementById('profileGSTIN')?.value.trim();
   const phone = document.getElementById('profilePhone')?.value.trim();
 
-  if (!name)               { showToast('Business name required!', 'error'); return; }
-  if (!validateGSTIN(gstin)) { showToast('Invalid GSTIN format!', 'error'); return; }
-  if (!validatePhone(phone)) { showToast('Invalid phone number!', 'error'); return; }
+  if (!name)               { showToast('Business name required', 'warning'); return; }
+  if (!validateGSTIN(gstin)) { showToast('Invalid GSTIN format (leave blank if unknown)', 'warning'); return; }
+  if (!validatePhone(phone)) { showToast('Invalid phone number', 'warning'); return; }
 
   Object.assign(State.profile, {
     name,
