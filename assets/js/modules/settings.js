@@ -11,6 +11,7 @@ import { saveSettings as _save } from '../core/storage.js';
 import { showToast } from '../ui/toast.js';
 import { setTheme } from '../ui/theme.js';
 import { savePINToStorage, removePIN } from '../core/security.js';
+import AppConfig from '../../../config/app.config.js';
 
 export function saveSettings() {
   Object.assign(State.settings, {
@@ -56,23 +57,48 @@ export async function savePIN() {
     return;
   }
   const pin = document.getElementById('newPIN')?.value;
-  if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-    showToast('Enter a 4-digit PIN', 'warning');
+  if (!pin || pin.length !== 4 || /[^\d]/.test(pin)) {
+    showToast('Enter a 4-digit numeric PIN', 'warning');
     return;
   }
-  await savePINToStorage(pin);
 
-  // Update UI: hide setup form, show remove button
-  const setup    = document.getElementById('pinSetup');
-  const removeEl = document.getElementById('pinRemove');
-  if (setup)    setup.style.display    = 'none';
-  if (removeEl) removeEl.style.display = 'block';
+  // Disable button while saving to prevent double-clicks
+  const saveBtn = document.querySelector('#pinSetup .btn-primary');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
 
-  // Clear the input field
-  const pinInput = document.getElementById('newPIN');
-  if (pinInput) pinInput.value = '';
+  try {
+    await savePINToStorage(pin);
 
-  showToast('PIN enabled — reload will require this PIN', 'success');
+    // Verify the PIN is actually readable back from localStorage before claiming success
+    const stored = localStorage.getItem(AppConfig.STORAGE_KEYS.PIN);
+    if (!stored) {
+      throw new Error('PIN was not persisted to storage');
+    }
+
+    // Only update UI after confirmed successful save
+    const setup    = document.getElementById('pinSetup');
+    const removeEl = document.getElementById('pinRemove');
+    if (setup)    setup.style.display    = 'none';
+    if (removeEl) removeEl.style.display = 'block';
+
+    const pinInput = document.getElementById('newPIN');
+    if (pinInput) pinInput.value = '';
+
+    showToast('PIN saved — reload will require this PIN', 'success');
+
+  } catch (err) {
+    // Save failed — roll back the checkbox so UI matches reality (no PIN stored)
+    const check = document.getElementById('pinEnabled');
+    const setup = document.getElementById('pinSetup');
+    if (check) check.checked = false;
+    if (setup) setup.style.display = 'none';
+
+    console.error('[Settings] PIN save failed:', err);
+    showToast('PIN could not be saved: ' + (err && err.message ? err.message : 'unknown error'), 'warning');
+
+  } finally {
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save PIN'; }
+  }
 }
 
 /**

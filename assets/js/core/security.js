@@ -113,10 +113,29 @@ export async function hashPIN(pin, salt) {
 // ── PIN save ─────────────────────────────────────────────────────────────────
 
 export async function savePINToStorage(pin) {
-  const salt = Array.from(crypto.getRandomValues(new Uint8Array(16)))
-    .map(b => b.toString(16).padStart(2, '0')).join('');
-  const hash = await hashPIN(pin, salt);
-  localStorage.setItem(AppConfig.STORAGE_KEYS.PIN, JSON.stringify({ hash, salt }));
+  // Wrapped in try/catch: if PBKDF2 throws (mobile browser crypto restriction,
+  // state issue, or context problem), we throw a clear error rather than silently
+  // leaving localStorage un-written while the caller shows a success toast.
+  let hash, salt;
+  try {
+    salt = Array.from(crypto.getRandomValues(new Uint8Array(16)))
+      .map(b => b.toString(16).padStart(2, '0')).join('');
+    hash = await hashPIN(pin, salt);
+  } catch (e) {
+    throw new Error('PIN hashing failed: ' + (e && e.message ? e.message : String(e)));
+  }
+
+  const value = JSON.stringify({ hash, salt });
+  try {
+    localStorage.setItem(AppConfig.STORAGE_KEYS.PIN, value);
+    // Verify the write actually persisted (defensive check)
+    const readback = localStorage.getItem(AppConfig.STORAGE_KEYS.PIN);
+    if (readback !== value) {
+      throw new Error('localStorage write did not persist (storage may be full or restricted)');
+    }
+  } catch (e) {
+    throw new Error('PIN save failed: ' + (e && e.message ? e.message : String(e)));
+  }
 }
 
 // ── PIN remove ───────────────────────────────────────────────────────────────
