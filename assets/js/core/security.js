@@ -170,19 +170,33 @@ export function checkPIN() {
     return Promise.resolve();
   }
 
-  // Parse stored PIN data — if corrupt, clear and recover
-  let pinData;
+  // Parse stored PIN data
+  let pinData = null;
+  let isLegacyBase64 = false;
+
   try {
     pinData = JSON.parse(stored);
   } catch (e) {
-    console.warn('[Security] checkPIN: corrupt PIN data, clearing');
-    localStorage.removeItem(AppConfig.STORAGE_KEYS.PIN);
-    return Promise.resolve();
+    // JSON.parse failed — could be the OLD btoa(pin) base64 format.
+    // atob(stored) gives back the original plaintext PIN.
+    // Do NOT silently delete: show the overlay and verify against the old format.
+    // On correct entry, migrate to the new {hash, salt} format automatically.
+    const looksBase64 = /^[A-Za-z0-9+/]+=*$/.test(stored.trim()) && stored.length >= 4;
+    if (looksBase64) {
+      console.info('[Security] checkPIN: detected legacy base64 PIN — showing overlay for verification');
+      isLegacyBase64 = true;
+      pinData = null; // handled via isLegacyBase64 path below
+    } else {
+      // Genuinely corrupt — not base64, not JSON. Safe to clear.
+      console.warn('[Security] checkPIN: unrecognisable PIN data, clearing');
+      localStorage.removeItem(AppConfig.STORAGE_KEYS.PIN);
+      return Promise.resolve();
+    }
   }
 
-  // Legacy PIN (plain base64) — clear and recover gracefully
-  if (!pinData || (!pinData.hash && !pinData.salt)) {
-    console.warn('[Security] checkPIN: legacy/invalid PIN format, clearing');
+  // New format must have both hash and salt
+  if (!isLegacyBase64 && (!pinData || (!pinData.hash && !pinData.salt))) {
+    console.warn('[Security] checkPIN: PIN missing hash/salt fields, clearing');
     localStorage.removeItem(AppConfig.STORAGE_KEYS.PIN);
     return Promise.resolve();
   }
@@ -254,13 +268,20 @@ export function checkPIN() {
 
         try {
           let ok = false;
-          if (pinData.hash && pinData.salt) {
+          if (isLegacyBase64) {
+            // Old btoa() format: atob(stored) gives plaintext PIN
+            try { ok = (atob(stored) === entered); } catch (_) { ok = false; }
+            if (ok) {
+              // Migrate to new PBKDF2 hash format transparently
+              try { await savePINToStorage(entered); } catch (_) {}
+            }
+          } else if (pinData && pinData.hash && pinData.salt) {
             const hash = await hashPIN(entered, pinData.salt);
             ok = (hash === pinData.hash);
           } else {
-            // Legacy base64 path (should have been cleared above, safety net)
+            // Fallback safety net
             try { ok = (atob(stored) === entered); } catch (_) { ok = false; }
-            if (ok) await savePINToStorage(entered); // migrate to v2 hash
+            if (ok) { try { await savePINToStorage(entered); } catch (_) {} }
           }
 
           if (ok) {

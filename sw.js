@@ -21,8 +21,8 @@ self.addEventListener('message', event => {
 
 'use strict';
 
-const CACHE_NAME     = 'ledgerix-v2.9-shell';
-const CDN_CACHE_NAME = 'ledgerix-v2.9-cdn';
+const CACHE_NAME     = 'ledgerix-v2.10-shell';
+const CDN_CACHE_NAME = 'ledgerix-v2.10-cdn';
 
 // App shell — served from cache first
 const SHELL_ASSETS = [
